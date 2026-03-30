@@ -127,7 +127,7 @@ const SideBox = styled.div`
 `;
 const TopBox = styled.div`
     display: flex;
-    height: 60px;
+    margin: 2% 0% 2% 0%;
 `;
 const ChatBox = styled.div`
 
@@ -137,6 +137,8 @@ const UserBox = styled.div`
 `;
 const UserWapper = styled.div`
     display: flex;
+    align-items: flex-end;
+    margin: 0px 0px 10px 20px;
 `;
 const UserName = styled.span`
     color: var(--black-1, #000);
@@ -146,6 +148,7 @@ const UserName = styled.span`
     line-height: normal;
 `;
 const UserCharge = styled.span`
+    margin-left: 10px;
     color: var(--Gray-7, #70716F);
     font-size: 16px;
     font-style: normal;
@@ -157,6 +160,11 @@ const MenuIcon = styled.img`
     height: 40px;
     justify-content: center;
     align-items: center;
+`;
+const RightBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 `;
 
 
@@ -227,15 +235,17 @@ export default function ChatPage(){
                         </UserBox>
                     </SideBox>
                     <VerticalLine />
-                    <TopBox>
-                        <UserWapper>
-                            <UserIcon $size={60} style={{margin: "40px", marginLeft: "100px"}} />
-                            <UserName>이름</UserName>
-                            <UserCharge>역할</UserCharge>
-                        </UserWapper>
-                        <MenuIcon src={menu} />
-                    </TopBox>
-                    <HorizontalLine $length={400} />
+                    <RightBox>
+                        <TopBox>
+                            <UserIcon $size={60} style={{marginLeft: 30}} />
+                            <UserWapper>
+                                <UserName>이름</UserName>
+                                <UserCharge>역할</UserCharge>
+                            </UserWapper>
+                            <MenuIcon src={menu} />
+                        </TopBox>
+                        <HorizontalLine $length={1103} />
+                    </RightBox>
                     <ChatBox>
 
                     </ChatBox>
