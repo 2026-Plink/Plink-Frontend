@@ -75,7 +75,6 @@ const FloatingWrapper = styled(InputWrapper)`
     }
 `
 
-// 🔥 버튼으로 변경 (중요)
 const LoginButton = styled.button`
     width: 538px;
     height: 90px;
@@ -88,14 +87,8 @@ const LoginButton = styled.button`
     cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `
 
-const LinkGroup = styled.div`
-    display: flex;
-    gap: 12px;
+const LoginLink = styled(Link)`
     margin-top: 20px;
-    justify-content: center;
-`
-
-const SubLink = styled(Link)`
     text-decoration: none;
     color: #70716F;
     font-size: 16px;
@@ -105,19 +98,19 @@ const SubLink = styled(Link)`
     }
 `
 
-const Divider = styled.span`
-    color: #ccc;
-`
-
-export default function Login() {
+export default function Signup() {
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState('');
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
     const validate = () => {
-        if (!id || !password) {
-            return '아이디와 비밀번호를 입력해주세요';
+        if (!email || !id || !password) {
+            return '모든 항목을 입력해주세요';
+        }
+        if (!email.includes('@')) {
+            return '이메일 형식이 올바르지 않습니다';
         }
         if (password.length < 4) {
             return '비밀번호는 4자 이상 입력해주세요';
@@ -125,28 +118,36 @@ export default function Login() {
         return '';
     };
 
-    const handleLogin = () => {
+    const handleSubmit = () => {
         const err = validate();
         if (err) {
             alert(err);
             return;
         }
 
-        if (id === 'test' && password === '1234') {
-            alert('로그인 성공');
-            navigate('/homePage');
-        } else {
-            alert('아이디 또는 비밀번호가 틀렸습니다');
-        }
+        alert('회원가입 성공');
+        // setTimeout(() => {
+            navigate('/');
+        // }, 500); // 텀 줘도 됨 
     };
 
-    const isDisabled = !id || !password;
+    const isDisabled = !email || !id || !password;
 
     return (
         <>
             <GlobalStyle />
             <Container>
                 <Logo src={logo} alt="logo" />
+
+                <FloatingWrapper>
+                    <Input
+                        type="email"
+                        placeholder=" "
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Label>이메일</Label>
+                </FloatingWrapper>
 
                 <FloatingWrapper>
                     <Input
@@ -167,17 +168,11 @@ export default function Login() {
                     <Label>비밀번호</Label>
                 </FloatingWrapper>
 
-                <LoginButton onClick={handleLogin} disabled={isDisabled}>
-                    로그인
+                <LoginButton onClick={handleSubmit} disabled={isDisabled}>
+                    회원가입
                 </LoginButton>
 
-                <LinkGroup>
-                    <SubLink to="/#">아이디 찾기</SubLink>
-                    <Divider>|</Divider>
-                    <SubLink to="/#">비밀번호 찾기</SubLink>
-                    <Divider>|</Divider>
-                    <SubLink to="/signup">회원가입</SubLink>
-                </LinkGroup>
+                <LoginLink to="/">로그인</LoginLink>
             </Container>
         </>
     )
