@@ -1,12 +1,39 @@
 //packages
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 //assets, components
 import { GlobalStyle } from "./team_page";
 import search from "../assets/search_icon.png";
 import detail_down_icon from "../assets/state_down.svg";
 import menu from "../assets/menu.svg";
+
+import symbol from '../assets/symbol.svg';
+import home from '../assets/home.svg';
+import in_home from '../assets/in_home.svg';
+import calendar from '../assets/calendar.svg';
+import in_calendar from '../assets/in_calendar.svg';
+import pen from '../assets/pen.svg';
+import in_pen from '../assets/in_pen.svg';
+import chat from '../assets/chat.svg';
+import in_chat from '../assets/in_chat.svg';
+import icon from '../assets/icon.svg';
+import in_icon from '../assets/in_icon.svg';
+import alarm from '../assets/alarm.svg';
+import setting from '../assets/setting.svg';
+import logo from '../assets/logo.svg';
+
+import { Menu } from "./schedule_page";
+import { Symbol } from "./schedule_page";
+import { Logo } from "./schedule_page";
+import { Item } from "./schedule_page";
+import { Background } from "./schedule_page";
+import { Icon } from "./schedule_page";
+import { Text } from "./schedule_page";
+import { Line } from "./schedule_page";
+import { PageLayout } from "./schedule_page";
+import { ContentBox } from "./schedule_page";
 
 //css
 const Layout = styled.div`
@@ -61,8 +88,10 @@ const StateBox = styled.div`
     display: flex;
     align-items: center;
     margin-left: 2%;
+    cursor: pointer;
 `;
 const StateDot = styled.div`
+    cursor: pointer;
     width: 10px;
     height: 10px;
     aspect-ratio: 1/1;
@@ -82,9 +111,10 @@ const DetailIcon = styled.img`
     width: 18px;
     height: 18px;
     aspect-ratio: 1/1;
+    cursor: pointer;
 `;
 const HorizontalLine = styled.div`
-    width: ${({$length}) => $length}px;
+    width: ${({$length}) => $length}%;
     height: 1px;
     background: #C9C9C8;
 `;
@@ -104,8 +134,8 @@ const StateMenu = styled.div`
     gap: 10px;
 
     position: absolute;
-    top: 290px;
-    left: 135px;
+    top: 280px;
+    left: 17%;
     z-index: 10; 
 
     border-radius: 12px;
@@ -130,14 +160,14 @@ const TopBox = styled.div`
     margin: 2% 0% 2% 0%;
 `;
 const ChatBox = styled.div`
-
+    display: flex;
+    flex-direction: column;
 `;
 const UserBox = styled.div`
 
 `;
 const UserWapper = styled.div`
     display: flex;
-    align-items: flex-end;
     margin: 0px 0px 10px 20px;
 `;
 const UserName = styled.span`
@@ -166,6 +196,52 @@ const RightBox = styled.div`
     flex-direction: column;
     flex: 1;
 `;
+const MessageBox = styled.div`
+
+`;
+const SendTextBox = styled.div`
+    width: ${({$textLength}) => $textLength};
+    display: flex;
+    padding: 14px 28px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: var(--Light-Green-4, #D3EB73);
+`;
+const SendText = styled.span`
+    color: var(--black-1, #000);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+`;
+const ReceiveTextBox = styled.div`
+    display: flex;
+    padding: 14px 28px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: var(--Gray-4, #E0E0E0);
+`;
+const ReceiveText = styled.span`
+    width: ${({$textLength}) => $textLength || "auto"}px;
+    color: var(--black-1, #000);
+    text-align: right;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+`;
+const TimeText = styled.span`
+    color: var(--Gray-7, #70716F);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+`;
+
 
 
 const states = [
@@ -176,6 +252,20 @@ const states = [
 ];
 
 export default function ChatPage(){
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const menus = [
+        { path: "/homePage", icon: home, activeIcon: in_home, label: "HOME" },
+        { path: "/schedule", icon: calendar, activeIcon: in_calendar, label: "SCHEDULE" },
+        { path: "/project", icon: pen, activeIcon: in_pen, label: "PROJECT" },
+        { path: "/chat", icon: chat, activeIcon: in_chat, label: "CHATTING" },
+        { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" }
+    ];
+
+    const isAlarmActive = location.pathname === "/alarm";
+    const isSettingActive = location.pathname === "/setting";
+
     const [openMenu, setOpenMenu] = useState(false);
     const [currentState, setCurrentState] = useState(states[0]);
     const menuRef = useRef();
@@ -198,58 +288,117 @@ export default function ChatPage(){
     return(
         <>
             <GlobalStyle />
-                <Layout>
-                    <SideBox>
-                        <SearchWapper>
-                            <SearchBox type="search" />
-                            <SearchIcon src={search} />
-                        </SearchWapper>
-                        <InfoWapper>
-                            <UserIcon $size={126} />
-                            <NameText></NameText>
-                            <StateBox onClick={() => setOpenMenu(prev => !prev)}>
-                                <StateDot $color={currentState.color} />
-                                <StateText>{currentState.label}</StateText>
-                                <DetailIcon src={detail_down_icon} />
-                            </StateBox>
-                        </InfoWapper>
-                        {openMenu && (
-                            <StateMenu ref={menuRef}>
-                                {states
-                                    .filter(s => s.label !== currentState.label)
-                                    .map((state, i, arr) => (
-                                    <>
-                                            <StateWapper key={state.label} onClick={() => handleStateChange(state)} style={{cursor: "pointer"}} >
-                                                <StateDot $color={state.color} />
-                                                <StateText>{state.label}</StateText>
-                                            </StateWapper>
-                                            {i < arr.length - 1 && <StateLine /> }
-                                    </> 
-                                    ))
-                                }
-                            </StateMenu>
-                        )}
-                        <HorizontalLine $length={370} />
-                        <UserBox>
-                            <UserIcon $size={60} />
-                        </UserBox>
-                    </SideBox>
-                    <VerticalLine />
-                    <RightBox>
-                        <TopBox>
-                            <UserIcon $size={60} style={{marginLeft: 30}} />
-                            <UserWapper>
-                                <UserName>이름</UserName>
-                                <UserCharge>역할</UserCharge>
-                            </UserWapper>
-                            <MenuIcon src={menu} />
-                        </TopBox>
-                        <HorizontalLine $length={1103} />
-                    </RightBox>
-                    <ChatBox>
+                <PageLayout>
+                    <Menu>
+                        <Symbol className="symbol" src={symbol} />
+                        <Logo className="logo" src={logo} />
 
-                    </ChatBox>
-                </Layout>
+                        {menus.map((menu) => {
+                            const isActive = location.pathname === menu.path;
+
+                            return (
+                                <Item
+                                    key={menu.path}
+                                    onClick={() => navigate(menu.path)}
+                                >
+                                    <Background $active={isActive} />
+
+                                    <Icon
+                                        src={isActive ? menu.activeIcon : menu.icon}
+                                    />
+
+                                    <Text className="text">{menu.label}</Text>
+                                </Item>
+                            );
+                        })}
+
+                        <Line />
+
+                        {/* 🔔 알림 */}
+                        <Item onClick={() => navigate("/alarm")}>
+                            <Background $active={isAlarmActive} />
+                            <Icon src={alarm} />
+                            <Text className="text">NOTIFICATIONS</Text>
+                        </Item>
+
+                        {/* ⚙️ 설정 */}
+                        <Item onClick={() => navigate("/setting")}>
+                            <Background $active={isSettingActive} />
+                            <Icon src={setting} />
+                            <Text className="text">SETTING</Text>
+                        </Item>
+                    </Menu>
+                    <ContentBox>
+                        <Layout>
+                            <SideBox>
+                                <SearchWapper>
+                                    <SearchBox type="search" />
+                                    <SearchIcon src={search} />
+                                </SearchWapper>
+                                <InfoWapper>
+                                    <UserIcon $size={126} />
+                                    <NameText></NameText>
+                                    <StateBox onClick={() => setOpenMenu(prev => !prev)}>
+                                        <StateDot $color={currentState.color} />
+                                        <StateText style={{cursor: "pointer"}}>{currentState.label}</StateText>
+                                        <DetailIcon src={detail_down_icon} />
+                                    </StateBox>
+                                </InfoWapper>
+                                {openMenu && (
+                                    <StateMenu ref={menuRef}>
+                                        {states
+                                            .filter(s => s.label !== currentState.label)
+                                            .map((state, i, arr) => (
+                                            <>
+                                                    <StateWapper key={state.label} onClick={() => handleStateChange(state)} style={{cursor: "pointer"}} >
+                                                        <StateDot $color={state.color} />
+                                                        <StateText>{state.label}</StateText>
+                                                    </StateWapper>
+                                                    {i < arr.length - 1 && <StateLine /> }
+                                            </> 
+                                            ))
+                                        }
+                                    </StateMenu>
+                                )}
+                                <HorizontalLine $length={100} />
+                                <UserBox>
+                                    <UserIcon $size={60} />
+                                </UserBox>
+                            </SideBox>
+                            <VerticalLine />
+                            <RightBox>
+                                <TopBox>
+                                    <UserWapper>
+                                        <UserIcon $size={60} style={{marginLeft: 30}} />
+                                        <UserName>이름</UserName>
+                                        <UserCharge>역할</UserCharge>
+                                    </UserWapper>
+                                    <MenuIcon src={menu} />
+                                </TopBox>
+                                <HorizontalLine $length={100} />
+                                <ChatBox>
+                                    <MessageBox>
+                                        <UserIcon $size={52} />
+                                        <ReceiveTextBox>
+                                            <ReceiveText>
+
+                                            </ReceiveText>
+                                        </ReceiveTextBox>
+                                        <TimeText></TimeText>
+                                    </MessageBox>
+                                    <MessageBox>
+                                        <SendTextBox>
+                                            <SendText>
+
+                                            </SendText>
+                                        </SendTextBox>
+                                        <TimeText></TimeText>
+                                    </MessageBox>
+                                </ChatBox>
+                            </RightBox>
+                        </Layout>
+                    </ContentBox>
+                </PageLayout>
         </>
     )
 }

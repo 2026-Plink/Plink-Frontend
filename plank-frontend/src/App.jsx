@@ -16,12 +16,12 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={< HomePage />} />
+          <Route path="/" element={ <Login /> } />
           <Route path="/team-create" element={< TeamCreate />} />
-          <Route path="/login" element={ < Login /> }/>
+          <Route path="/homepage" element={ < HomePage /> }/>
           <Route path="/team-join" element={ <TeamJoin /> } />
-          <Route path="/team-page" element={< TeamPage />} />
-          <Route path="/schedule-page" element={ <SchedulePage /> } />
+          <Route path="/project" element={< TeamPage />} />
+          <Route path="/schedule" element={ <SchedulePage /> } />
           <Route path="/chat" element={ <ChatPage /> } />
           <Route path="/detail-page" element={ <TeamDetailPage /> } />
         </Routes>
@@ -30,4 +30,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

@@ -1,6 +1,6 @@
 //packages
 import styled, { createGlobalStyle } from "styled-components"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
 //assets, components
@@ -10,6 +10,32 @@ import menuIcon from "../assets/menu.svg";
 import modifyIcon from "../assets/modify_icon.svg";
 import hidingIcon from "../assets/hiding_icon.svg";
 import deleteIcon from "../assets/delete_icon.svg";
+
+import symbol from '../assets/symbol.svg';
+import home from '../assets/home.svg';
+import in_home from '../assets/in_home.svg';
+import calendar from '../assets/calendar.svg';
+import in_calendar from '../assets/in_calendar.svg';
+import pen from '../assets/pen.svg';
+import in_pen from '../assets/in_pen.svg';
+import chat from '../assets/chat.svg';
+import in_chat from '../assets/in_chat.svg';
+import icon from '../assets/icon.svg';
+import in_icon from '../assets/in_icon.svg';
+import alarm from '../assets/alarm.svg';
+import setting from '../assets/setting.svg';
+import logo from '../assets/logo.svg';
+
+import { Menu } from "./schedule_page";
+import { Symbol } from "./schedule_page";
+import { Logo } from "./schedule_page";
+import { Item } from "./schedule_page";
+import { Background } from "./schedule_page";
+import { Icon } from "./schedule_page";
+import { Text } from "./schedule_page";
+import { Line } from "./schedule_page";
+import { PageLayout } from "./schedule_page";
+import { ContentBox } from "./schedule_page";
 
 //css
 export const GlobalStyle = createGlobalStyle`
@@ -275,6 +301,19 @@ const Wapper = styled.div`
 
 export default function TeamPage(){
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const menus = [
+        { path: "/homePage", icon: home, activeIcon: in_home, label: "HOME" },
+        { path: "/schedule", icon: calendar, activeIcon: in_calendar, label: "SCHEDULE" },
+        { path: "/project", icon: pen, activeIcon: in_pen, label: "PROJECT" },
+        { path: "/chat", icon: chat, activeIcon: in_chat, label: "CHATTING" },
+        { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" }
+    ];
+
+    const isAlarmActive = location.pathname === "/alarm";
+    const isSettingActive = location.pathname === "/setting";
+    
     const menuRef = useRef();
     const [search, setSearch] = useState("");
     const [openMenu, setOpenMenu] = useState(false);
@@ -300,61 +339,104 @@ export default function TeamPage(){
     return(
         <>
             <GlobalStyle />
-            <HeaderBar>
-                <SearchBox>
-                    <SearchInput type="search" value={search} onChange={(e) => setSearch(e.target.value)}
-                        onKeyDown={(e) => {if (e.key === "Enter") handleSearch();}} />
-                    <SearchIcon src={searchIcon} onClick={handleSearch} />
-                </SearchBox>
-                <JoinButton onClick={() => navigate("/team-join")} >참가하기</JoinButton>
-            </HeaderBar>
-            <TeamBox>
-                <TeamBarContainer>
-                    <Wapper>
-                        <TeamLogo />
-                        <EllipsisIcon src={menuIcon} onClick={() => setOpenMenu(prev => !prev)} />
-                    </Wapper>
-                    {openMenu && (
-                        <MenuBox ref={menuRef}>
-                            <MenuWapper>
-                                <MenuIcon src={modifyIcon} />
-                                <MenuText>수정</MenuText>
-                            </MenuWapper>
-                            <MenuLine />
-                            <MenuWapper>
-                                <MenuIcon src={hidingIcon} />
-                                <MenuText>숨김</MenuText>
-                            </MenuWapper>
-                            <MenuLine />
-                            <MenuWapper>
-                                <MenuIcon src={deleteIcon} />
-                                <MenuText>삭제</MenuText>
-                            </MenuWapper>
-                        </MenuBox>
-                    )}
-                    <TextBox>
-                        <TeamBarTitle>프로젝트 명</TeamBarTitle>
-                        <DetailBox>
-                            <PeriodText>기간</PeriodText>
-                            <TeamDetailText>03/01 - 06/01</TeamDetailText>
-                        </DetailBox>
-                        <DetailBox>
-                            <ChargeText>담당</ChargeText>
-                            <TeamDetailText>UI 디자인</TeamDetailText>
-                        </DetailBox>
-                    </TextBox>
-                    <ProgressText>65%</ProgressText>
-                    <BarWapper>
-                        <ProgressBar>
-                            <BarFill $progress={getProgress} />
-                        </ProgressBar>
-                    </BarWapper>
-                    <DetailText onClick={() => navigate("/detail-page")}>자세히 보기</DetailText>
-                </TeamBarContainer>
-                <CreateButton onClick={() => navigate("/team-create")}>
-                    <CreateIcon src={createIcon} />
-                </CreateButton>
-            </TeamBox>
+                <PageLayout>
+                    <Menu>
+                    <Symbol className="symbol" src={symbol} />
+                    <Logo className="logo" src={logo} />
+
+                    {menus.map((menu) => {
+                        const isActive = location.pathname === menu.path;
+
+                        return (
+                            <Item
+                                key={menu.path}
+                                onClick={() => navigate(menu.path)}
+                            >
+                                <Background $active={isActive} />
+
+                                <Icon
+                                    src={isActive ? menu.activeIcon : menu.icon}
+                                />
+
+                                <Text className="text">{menu.label}</Text>
+                            </Item>
+                        );
+                    })}
+
+                    <Line />
+
+                    {/* 🔔 알림 */}
+                    <Item onClick={() => navigate("/alarm")}>
+                        <Background $active={isAlarmActive} />
+                        <Icon src={alarm} />
+                        <Text className="text">NOTIFICATIONS</Text>
+                    </Item>
+
+                    {/* ⚙️ 설정 */}
+                    <Item onClick={() => navigate("/setting")}>
+                        <Background $active={isSettingActive} />
+                        <Icon src={setting} />
+                        <Text className="text">SETTING</Text>
+                    </Item>
+                    </Menu>
+                    <ContentBox>
+                        <HeaderBar>
+                            <SearchBox>
+                                <SearchInput type="search" value={search} onChange={(e) => setSearch(e.target.value)}
+                                    onKeyDown={(e) => {if (e.key === "Enter") handleSearch();}} />
+                                <SearchIcon src={searchIcon} onClick={handleSearch} />
+                            </SearchBox>
+                            <JoinButton onClick={() => navigate("/team-join")} >참가하기</JoinButton>
+                        </HeaderBar>
+                        <TeamBox>
+                            <TeamBarContainer>
+                                <Wapper>
+                                    <TeamLogo />
+                                    <EllipsisIcon src={menuIcon} onClick={() => setOpenMenu(prev => !prev)} />
+                                </Wapper>
+                                {openMenu && (
+                                    <MenuBox ref={menuRef}>
+                                        <MenuWapper>
+                                            <MenuIcon src={modifyIcon} />
+                                            <MenuText>수정</MenuText>
+                                        </MenuWapper>
+                                        <MenuLine />
+                                        <MenuWapper>
+                                            <MenuIcon src={hidingIcon} />
+                                            <MenuText>숨김</MenuText>
+                                        </MenuWapper>
+                                        <MenuLine />
+                                        <MenuWapper>
+                                            <MenuIcon src={deleteIcon} />
+                                            <MenuText>삭제</MenuText>
+                                        </MenuWapper>
+                                    </MenuBox>
+                                )}
+                                <TextBox>
+                                    <TeamBarTitle>프로젝트 명</TeamBarTitle>
+                                    <DetailBox>
+                                        <PeriodText>기간</PeriodText>
+                                        <TeamDetailText>03/01 - 06/01</TeamDetailText>
+                                    </DetailBox>
+                                    <DetailBox>
+                                        <ChargeText>담당</ChargeText>
+                                        <TeamDetailText>UI 디자인</TeamDetailText>
+                                    </DetailBox>
+                                </TextBox>
+                                <ProgressText>65%</ProgressText>
+                                <BarWapper>
+                                    <ProgressBar>
+                                        <BarFill $progress={getProgress} />
+                                    </ProgressBar>
+                                </BarWapper>
+                                <DetailText onClick={() => navigate("/detail-page")}>자세히 보기</DetailText>
+                            </TeamBarContainer>
+                            <CreateButton onClick={() => navigate("/team-create")}>
+                                <CreateIcon src={createIcon} />
+                            </CreateButton>
+                        </TeamBox>
+                    </ContentBox>
+                </PageLayout>
         </>
     )
 }
