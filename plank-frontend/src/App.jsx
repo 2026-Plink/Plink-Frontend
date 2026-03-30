@@ -1,37 +1,33 @@
+//packages
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+//components
 import TeamCreate from "./components/team_create";
 import Login from "./pages/login";
-import HomePage from "./pages/homePage";
-import Schedule from "./components/schedule";
-import Signup from "./pages/signup";
-import Project from "./components/project";
-import Chat from "./components/chat";
-import MyPage from "./components/mypage";
-
-/* 🔥 추가 */
-import Alarm from "./components/alarm";
-import Setting from "./components/setting";
+import HomePage  from "./pages/homePage";
+import TeamJoin from "./components/team_join";
+import TeamPage from "./components/team_page";
+import SchedulePage from "./components/schedule_page";
+import TeamDetailPage from "./components/detail_page";
+import ChatPage from "./components/chat_page";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/homePage" element={<HomePage />} />
-        <Route path="/team-create" element={<TeamCreate />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/project" element={<Project />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/mypage" element={<MyPage />} />
-
-        {/* 🔥 추가된 라우트 */}
-        <Route path="/alarm" element={<Alarm />} />
-        <Route path="/setting" element={<Setting />} />
-      </Routes>
-    </Router>
-  );
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={< HomePage />} />
+          <Route path="/team-create" element={< TeamCreate />} />
+          <Route path="/login" element={ < Login /> }/>
+          <Route path="/team-join" element={ <TeamJoin /> } />
+          <Route path="/team-page" element={< TeamPage />} />
+          <Route path="/schedule-page" element={ <SchedulePage /> } />
+          <Route path="/chat" element={ <ChatPage /> } />
+          <Route path="/detail-page" element={ <TeamDetailPage /> } />
+        </Routes>
+      </Router>
+    </>
+  )
 }
 
 export default App;
