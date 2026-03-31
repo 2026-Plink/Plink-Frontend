@@ -218,7 +218,7 @@ export default function TeamCreate(){
     return(
         <>
             <GlobalStyle />
-                <BackButton onClick={() => navigate("/team-page")}>
+                <BackButton onClick={() => navigate("/project")}>
                     <Icon src={Backbtn} />
                 </BackButton>
                 <Container>

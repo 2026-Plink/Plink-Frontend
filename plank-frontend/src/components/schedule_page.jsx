@@ -24,6 +24,14 @@ import logo from '../assets/logo.svg';
 
 //components
 import { GlobalStyle } from "./team_page";
+import { Menu } from "../pages/homePage";
+import { Symbol } from "../pages/homePage";
+import { Logo } from "../pages/homePage";
+import { Item } from "../pages/homePage";
+import { Background } from "../pages/homePage";
+import { Icon } from "../pages/homePage";
+import { Text } from "../pages/homePage";
+import { Line } from "../pages/homePage";
 
 //css
 const HeaderBar = styled.header`
@@ -92,157 +100,68 @@ const DateGrid = styled.div`
     grid-template-columns: repeat(7, 1fr);
     gap: 20px 0;
 `;
-const DateCell = styled.div`
-    width: 110px;
-    height: 120px;
-    color: var(--Gray-7, #70716F);
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-
-    color: ${({ isCurrent }) =>
-        isCurrent
-            ? "var(--Gray-7, #70716F)"
-            : "var(--Gray-5, #C9C9C8)"};
-
-    &:hover{
-        border-radius: 16px;
-        border: 1px solid var(--Light-Green-2, #C0DA58);
-        background: var(--white-1, #FFF);
-        box-shadow: 0 0 30px 2px rgba(192, 218, 88, 0.20);
-    }
-`;
-const ScheduleText = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 100px;
-    background: var(--Light-Green-2, #C0DA58);
-`;
-
-export const Menu = styled.div`
-    height: 100vh;
-    width: 130px;
-    background-color: #F9F9F8;
-    transition: 0.3s;
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    &:hover {
-        width: 316px;
-    }
-
-    &:hover .text {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    &:hover .symbol {
-        display: none;
-    }
-
-    &:hover .logo {
-        display: block;
-    }
-`;
-
-export const Symbol = styled.img`
-    height: 70px;
-    width: 62px;
-    margin-top: 65px;
-    margin-bottom: 50px;
-`;
-
-export const Logo = styled.img`
-    width: 132px;
-    height: 65px;
-    margin-top: 65px;
-    margin-bottom: 50px;
-    display: none;
-`;
-
-export const Item = styled.div`
-    width: 100%;
-    height: 70px;
-
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-
-    position: relative;
-    cursor: pointer;
-`;
-
-export const Background = styled.div`
-    width: 52px;
-    height: 52px;
-
-    position: absolute;
-    left: 37px; /* 🔥 요청대로 고정 */
-    top: 50%;
-    transform: translateY(-50%);
-
-    background: #FFF;
-    border-radius: 50%;
-
-    box-shadow: ${({ $active }) =>
-        $active
-            ? "0 0 30px 2px rgba(192, 218, 88, 0.30)"
-            : "none"};
-
-    display: ${({ $active }) => ($active ? "block" : "none")};
-
-    transition: 0.3s;
-
-    ${Menu}:hover & {
-        width: 272px;
-        height: 52px;
-        border-radius: 8px;
-        left: 20px;
-    }
-`;
-
-export const Icon = styled.img`
-    width: 28px;
-    height: 28px;
-    margin-left: 21px;
-    z-index: 2;
-`;
-
-export const Text = styled.span`
-    margin-left: 40px;
-    font-size: 16px;
-    color: #333;
-
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: 0.3s;
-`;
-
-export const Line = styled.div`
-    width: 70%;
-    height: 1px;
-    background-color: #C9C9C8;
-    margin: 40px 0;
-`;
 export const PageLayout = styled.div`
     display: flex;
     height: 100vh;
 `;
-
 export const ContentBox = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
 `;
+const DateCell = styled.div`
+    color: ${({ isCurrent }) =>
+        isCurrent
+            ? "var(--Gray-7, #70716F)"
+            : "var(--Gray-5, #C9C9C8)"};
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 100%;
+
+    /* hover를 DateCellWrapper로 이동 */
+`;
+
+const DateCellWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+    width: 110px;
+    height: 120px;
+    cursor: pointer;
+
+    &:hover {
+        border-radius: 16px;
+        border: 1px solid var(--Light-Green-2, #C0DA58);
+        background: var(--white-1, #FFF);
+        box-shadow: 0 0 30px 2px rgba(192, 218, 88, 0.20);
+    }
+`;
+const ScheduleTextBox = styled.div`
+    display: inline-flex;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    background: var(--Light-Green-2, #C0DA58);
+`;
+const ScheduleText = styled.span`
+    color: var(--white-1, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background: var(--Light-Green-2, #C0DA58);
+`;
+
 
 export default function SchedulePage(){
     const months = [
@@ -374,9 +293,17 @@ export default function SchedulePage(){
                         {/* 날짜 */}
                         <DateGrid>
                             {dates.map((d, i) => (
-                                <DateCell key={i} isCurrent={d.isCurrent} >
-                                    {d.day}
-                                </DateCell>
+                                <DateCellWrapper key={i}>
+                                    <DateCell isCurrent={d.isCurrent}>
+                                        {d.day}
+                                    </DateCell>
+                                    {/* 특정 날짜에 일정 표시 예시 - d.day === 5 등 조건으로 제어 */}
+                                    {d.day === 5 && d.isCurrent && (
+                                        <ScheduleTextBox>
+                                            <ScheduleText>UI 디자인</ScheduleText>
+                                        </ScheduleTextBox>
+                                    )}
+                                </DateCellWrapper>
                             ))}
                         </DateGrid>
                     </CalendarWrapper>

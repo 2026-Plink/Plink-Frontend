@@ -10,6 +10,7 @@ import menuIcon from "../assets/menu.svg";
 import modifyIcon from "../assets/modify_icon.svg";
 import hidingIcon from "../assets/hiding_icon.svg";
 import deleteIcon from "../assets/delete_icon.svg";
+import team_icon from "../assets/default_user_icon.svg";
 
 import symbol from '../assets/symbol.svg';
 import home from '../assets/home.svg';
@@ -26,14 +27,14 @@ import alarm from '../assets/alarm.svg';
 import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 
-import { Menu } from "./schedule_page";
-import { Symbol } from "./schedule_page";
-import { Logo } from "./schedule_page";
-import { Item } from "./schedule_page";
-import { Background } from "./schedule_page";
-import { Icon } from "./schedule_page";
-import { Text } from "./schedule_page";
-import { Line } from "./schedule_page";
+import { Menu } from "../pages/homePage";
+import { Symbol } from "../pages/homePage";
+import { Logo } from "../pages/homePage";
+import { Item } from "../pages/homePage";
+import { Background } from "../pages/homePage";
+import { Icon } from "../pages/homePage";
+import { Text } from "../pages/homePage";
+import { Line } from "../pages/homePage";
 import { PageLayout } from "./schedule_page";
 import { ContentBox } from "./schedule_page";
 
@@ -253,7 +254,6 @@ const CreateIcon = styled.img`
 `;
 const MenuBox = styled.div`
     position: absolute;
-
     top: 100px;
     right: 50px;
     display: flex;
@@ -391,7 +391,7 @@ export default function TeamPage(){
                         <TeamBox>
                             <TeamBarContainer>
                                 <Wapper>
-                                    <TeamLogo />
+                                    <TeamLogo src={team_icon} />
                                     <EllipsisIcon src={menuIcon} onClick={() => setOpenMenu(prev => !prev)} />
                                 </Wapper>
                                 {openMenu && (
@@ -431,10 +431,10 @@ export default function TeamPage(){
                                 </BarWapper>
                                 <DetailText onClick={() => navigate("/detail-page")}>자세히 보기</DetailText>
                             </TeamBarContainer>
-                            <CreateButton onClick={() => navigate("/team-create")}>
-                                <CreateIcon src={createIcon} />
-                            </CreateButton>
                         </TeamBox>
+                        <CreateButton onClick={() => navigate("/team-create")}>
+                            <CreateIcon src={createIcon} />
+                        </CreateButton>
                     </ContentBox>
                 </PageLayout>
         </>

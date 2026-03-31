@@ -31,11 +31,7 @@ const Container = styled.div`
 `;
 
 /* --- Sidebar Menu Styles (기존과 동일) --- */
-const Menu = styled.div`
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 100;
+export const Menu = styled.div`
     height: 100vh;
     width: 130px;
     background-color: #F9F9F8;
@@ -60,14 +56,14 @@ const Menu = styled.div`
     }
 `;
 
-const Symbol = styled.img`
+export const Symbol = styled.img`
     height: 70px;
     width: 62px;
     margin-top: 65px;
     margin-bottom: 50px;
 `;
 
-const Logo = styled.img`
+export const Logo = styled.img`
     width: 132px;
     height: 65px;
     margin-top: 65px;
@@ -75,7 +71,7 @@ const Logo = styled.img`
     display: none;
 `;
 
-const Item = styled.div`
+export const Item = styled.div`
     width: 100%;
     height: 70px;
     display: flex;
@@ -83,9 +79,10 @@ const Item = styled.div`
     padding-left: 30px;
     position: relative;
     cursor: pointer;
+    background-color: #F9F9F8;
 `;
 
-const Background = styled.div`
+export const Background = styled.div`
     width: 52px;
     height: 52px;
     position: absolute;
@@ -107,14 +104,14 @@ const Background = styled.div`
     }
 `;
 
-const Icon = styled.img`
+export const Icon = styled.img`
     width: 28px;
     height: 28px;
     margin-left: 21px;
     z-index: 2;
 `;
 
-const Text = styled.span`
+export const Text = styled.span`
     margin-left: 40px;
     font-size: 16px;
     color: #333;
@@ -124,7 +121,7 @@ const Text = styled.span`
     transition: 0.3s;
 `;
 
-const Line = styled.div`
+export const Line = styled.div`
     width: 70%;
     height: 1px;
     background-color: #C9C9C8;
