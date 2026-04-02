@@ -10,6 +10,7 @@ import TeamPage from "./components/team_page";
 import SchedulePage from "./components/schedule_page";
 import TeamDetailPage from "./components/detail_page";
 import ChatPage from "./components/chat_page";
+import Mypage from "./components/mypage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/schedule" element={ <SchedulePage /> } />
           <Route path="/chat" element={ <ChatPage /> } />
           <Route path="/detail-page" element={ <TeamDetailPage /> } />
+          <Route path="/mypage" element={ <Mypage/>}/>
         </Routes>
       </Router>
     </>
