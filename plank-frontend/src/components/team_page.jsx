@@ -27,7 +27,6 @@ import alarm from '../assets/alarm.svg';
 import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 
-import { Menu } from "../pages/homePage";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";
@@ -46,6 +45,30 @@ export const GlobalStyle = createGlobalStyle`
         padding : 0;
         box-sizing: border-box;
         background-color: #FFF;
+    }
+`;
+export const Menu = styled.div`
+    height: 100vh;
+    width: 130px;
+    background-color: #F9F9F8;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+
+    &:hover {
+        width: 300px;
+    }
+    &:hover .text {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    &:hover .symbol {
+        display: none;
+    }
+    &:hover .logo {
+        display: block;
     }
 `;
 const HeaderBar = styled.header`
@@ -370,13 +393,6 @@ export default function TeamPage(){
                         <Background $active={isAlarmActive} />
                         <Icon src={alarm} />
                         <Text className="text">NOTIFICATIONS</Text>
-                    </Item>
-
-                    {/* ⚙️ 설정 */}
-                    <Item onClick={() => navigate("/setting")}>
-                        <Background $active={isSettingActive} />
-                        <Icon src={setting} />
-                        <Text className="text">SETTING</Text>
                     </Item>
                     </Menu>
                     <ContentBox>

@@ -105,6 +105,7 @@ export const SumbitButton = styled.button`
     gap: 10px;
     border: none;
     cursor: pointer;
+    margin: 40px 0;
 
     border-radius: 12px;
     background: var(--Light-Green-2, #C0DA58);

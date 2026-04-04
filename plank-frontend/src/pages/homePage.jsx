@@ -100,6 +100,7 @@ export const Item = styled.div`
     padding-left: 30px;
     position: relative;
     cursor: pointer;
+    background-color: #F9F9F8;
 `;
 
 export const Background = styled.div`
