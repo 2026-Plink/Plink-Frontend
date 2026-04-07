@@ -72,11 +72,11 @@ export default function TeamJoin() {
             });
 
             if(!res.ok){
-                console.log("팀 생성 실패!");
-                alert("팀 생성 실패");
+                console.log("팀 참가 실패!");
+                alert("팀 참가 실패");
             }else{
-                console.log("팀 생성 완료!");
-                alert("팀 생성 성공");
+                console.log("팀 참가 완료!");
+                alert("팀 참가 성공");
             }
         }catch(err){
             console.error(err);

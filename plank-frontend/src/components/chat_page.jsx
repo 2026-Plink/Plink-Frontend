@@ -26,7 +26,7 @@ import alarm from '../assets/alarm.svg';
 import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 
-import { Menu } from "../pages/homePage";
+import { Menu } from "./team_page";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";
@@ -38,11 +38,11 @@ import { PageLayout } from "./schedule_page";
 import { ContentBox } from "./schedule_page";
 
 //css
-const Layout = styled.div`
+export const Layout = styled.div`
     display: flex;
     height: 100vh;
 `;
-const SearchWapper = styled.div`
+export const SearchWapper = styled.div`
     display: flex;
     width: 354px;
     height: 52px;
@@ -56,17 +56,17 @@ const SearchWapper = styled.div`
     background: var(--white-1, #FFF);
     box-shadow: 0 0 11.9px 2px rgba(0, 0, 0, 0.08);
 `;
-const SearchBox = styled.input`
+export const SearchBox = styled.input`
     width: 330px;
     border: none;
     outline: none;
 `;
-const SearchIcon = styled.img`
+export const SearchIcon = styled.img`
     width: 24px;
     height: 24px;
     aspect-ratio: 1/1;
 `;
-const InfoWapper = styled.div`
+export const InfoWapper = styled.div`
     margin: 10% 0 10% 0;
     display: flex;
     flex-direction: column;
@@ -74,12 +74,12 @@ const InfoWapper = styled.div`
     align-items: center;
     justify-content: center;
 `;
-const UserIcon = styled.img`
+export const UserIcon = styled.img`
     width: ${({$size}) => $size}px;
     height: ${({$size}) => $size}px;
     border-radius: 126px;
 `;
-const NameText = styled.span`
+export const NameText = styled.span`
     color: var(--black-1, #000);
     font-size: 26px;
     font-style: normal;
@@ -87,13 +87,13 @@ const NameText = styled.span`
     line-height: normal;
     margin: 5px;
 `;
-const StateBox = styled.div`
+export const StateBox = styled.div`
     display: flex;
     align-items: center;
     margin-left: 2%;
     cursor: pointer;
 `;
-const StateDot = styled.div`
+export const StateDot = styled.div`
     cursor: pointer;
     width: 10px;
     height: 10px;
@@ -103,30 +103,30 @@ const StateDot = styled.div`
 
     background: #${({$color}) => $color};
 `;
-const StateText = styled.span`
+export const StateText = styled.span`
     color: var(--black-1, #000);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 `;
-const DetailIcon = styled.img`
+export const DetailIcon = styled.img`
     width: 18px;
     height: 18px;
     aspect-ratio: 1/1;
     cursor: pointer;
 `;
-const HorizontalLine = styled.div`
+export const HorizontalLine = styled.div`
     width: ${({$length}) => $length}%;
     height: 1px;
     background: #C9C9C8;
 `;
-const VerticalLine = styled.div`
+export const VerticalLine = styled.div`
     width: 1px;
     height: 100%;
     background: #C9C9C8;
 `;
-const StateMenu = styled.div`
+export const StateMenu = styled.div`
     display: flex;
     width: 150px;
     height: 113px;
@@ -137,7 +137,7 @@ const StateMenu = styled.div`
     gap: 10px;
 
     position: absolute;
-    top: 280px;
+    top: 310px;
     left: 17%;
     z-index: 10; 
 
@@ -145,20 +145,20 @@ const StateMenu = styled.div`
     background: var(--white-1, #FFF);
     box-shadow: 0 0 11.9px 2px rgba(0, 0, 0, 0.08);
 `;
-const StateLine = styled.div`
+export const StateLine = styled.div`
     width: 124px;
     height: 0.5px;
     background: #C9C9C8;
 `;
-const StateWapper = styled.div`
+export const StateWapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
 `;
-const SideBox = styled.div`
+export const SideBox = styled.div`
     margin: 2%;
 `;
-const TopBox = styled.div`
+export const TopBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -170,14 +170,14 @@ const UserWapper = styled.div`
     align-items: center;
     gap: 12px;
 `;
-const UserName = styled.span`
+export const UserName = styled.span`
     color: var(--black-1, #000);
     font-size: 26px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
 `;
-const UserCharge = styled.span`
+export const UserCharge = styled.span`
     margin-left: 10px;
     color: var(--Gray-7, #70716F);
     font-size: 16px;
@@ -188,13 +188,13 @@ const UserCharge = styled.span`
     align-items: flex-end;
     align-self: flex-end;
 `;
-const UserBox = styled.div`
+export const UserBox = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     overflow-y: auto;
 `;
-const ChatItem = styled.div`
+export const ChatItem = styled.div`
     display: flex;
     align-items: center;
     gap: 14px;
@@ -202,32 +202,32 @@ const ChatItem = styled.div`
     cursor: pointer;
     border-radius: 12px;
 `;
-const ChatItemIconWrapper = styled.div`
+export const ChatItemIconWrapper = styled.div`
     position: relative;
     flex-shrink: 0;
 `;
-const ChatItemInfo = styled.div`
+export const ChatItemInfo = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow: hidden;
 `;
-const ChatItemTop = styled.div`
+export const ChatItemTop = styled.div`
     display: flex;
     align-items: center;
     gap: 6px;
 `;
-const ChatItemName = styled.span`
+export const ChatItemName = styled.span`
     color: var(--black-1, #000);
     font-size: 16px;
     font-weight: 600;
 `;
-const ChatItemBottom = styled.div`
+export const ChatItemBottom = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
-const ChatItemMsg = styled.span`
+export const ChatItemMsg = styled.span`
     color: var(--Gray-7, #70716F);
     font-size: 13px;
     font-weight: 400;
@@ -235,19 +235,14 @@ const ChatItemMsg = styled.span`
     overflow: hidden;
     text-overflow: ellipsis;
 `;
-const ChatItemTime = styled.span`
-    color: var(--Gray-7, #70716F);
-    font-size: 11px;
-    font-weight: 400;
-    flex-shrink: 0;
-`;
-const MenuIcon = styled.img`
+export const MenuIcon = styled.img`
     width: 40px;
     height: 40px;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `;
-const RightBox = styled.div`
+export const RightBox = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -261,6 +256,12 @@ const ChatBox = styled.div`
     overflow-y: auto;
     padding: 20px;
     gap: 16px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
 const MessageRow = styled.div`
     display: flex;
@@ -324,7 +325,7 @@ const MessageInput = styled.input`
     border: 0;
     outline: 0;
 `;
-const NameWapper = styled.div`
+export const NameWapper = styled.div`
     display: flex;
     height: 40px;
     margin-bottom: 5px;
@@ -332,7 +333,7 @@ const NameWapper = styled.div`
 
 
 //value 저장되어야함.
-const states = [
+export const states = [
     { color: "3AB92C", label: "활동 중", value: "ONLINE"},
     { color: "F0CF19", label: "자리비움", value: "IDLE"},
     { color: "F04419", label: "방해 금지", value: "DND"},
@@ -372,16 +373,19 @@ export default function ChatPage(){
         setOpenMenu(false);
     }
 
-    //
+    //챗 내용
     const [sendChat, setSendChat] = useState("");
 
-    //이것도
-    const chatList = [
-        { id: 1, name: "박재영", charge: "디자이너", lastMsg: "넹", time: "1시간", state: "ONLINE" },
-        { id: 2, name: "윤다경", charge: "개발자", lastMsg: "알겠습니다", time: "3시간", state: "IDLE" },
-        { id: 3, name: "장시후", charge: "기획자", lastMsg: "네", time: "5시간", state: "DND" },
-        { id: 4, name: "팀 프로젝트 A", charge: "그룹", lastMsg: "감사합니다", time: "14시간", state: "OFFLINE" },
-    ];
+    //챗 정보 더미데이터
+    const [chatList, setChatList] = useState(
+        location.state?.chatList || [
+            { id: 1, name: "박재영", charge: "디자이너", lastMsg: "넹", time: "1시간", state: "ONLINE" },
+            { id: 2, name: "윤다경", charge: "개발자", lastMsg: "알겠습니다", time: "3시간", state: "IDLE" },
+            { id: 3, name: "장시후", charge: "기획자", lastMsg: "네", time: "5시간", state: "DND" },
+            { id: 4, name: "팀 프로젝트 A", charge: "그룹", lastMsg: "감사합니다", time: "14시간", state: "OFFLINE" },
+        ]
+    );
+    // selectedChat도 삭제된 항목이면 첫번째로 초기화
     const [selectedChat, setSelectedChat] = useState(chatList[0]);
 
     const [allMessages, setAllMessages] = useState({
@@ -390,6 +394,14 @@ export default function ChatPage(){
         3: [{ id: 1, text: "네", isMine: false, time: "2:15 PM" }],
         4: [{ id: 1, text: "감사합니다", isMine: false, time: "2:15 PM" }],
     });
+
+    const chatBoxRef = useRef();
+
+    useEffect(() => {
+        if(chatBoxRef.current){
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
+    }, [allMessages, selectedChat]);
     
     const SendChat = () => {
         if(sendChat.trim() === "") return;
@@ -436,13 +448,6 @@ export default function ChatPage(){
                             <Background $active={isAlarmActive} />
                             <Icon src={alarm} />
                             <Text className="text">NOTIFICATIONS</Text>
-                        </Item>
-
-                        {/* ⚙️ 설정 */}
-                        <Item onClick={() => navigate("/setting")}>
-                            <Background $active={isSettingActive} />
-                            <Icon src={setting} />
-                            <Text className="text">SETTING</Text>
                         </Item>
                     </Menu>
                     <ContentBox>
@@ -511,11 +516,11 @@ export default function ChatPage(){
                                         <UserName>{selectedChat.name}</UserName>
                                         <UserCharge>{selectedChat.charge}</UserCharge>
                                     </UserWapper>
-                                    <MenuIcon src={menu} />
+                                    <MenuIcon src={menu} onClick={() => navigate("/chatinfo", {state: {selectedChat, chatList}})} />
                                 </TopBox>
                                 <HorizontalLine $length={100} />
                                 {/* 메세지 창 */}
-                                <ChatBox>
+                                <ChatBox ref={chatBoxRef}>
                                     {(allMessages[selectedChat.id] || []).map((msg) => (
                                         <MessageRow key={msg.id} $isMine={msg.isMine}>
                                             {!msg.isMine && <UserIcon $size={60} src={user_icon} />}
