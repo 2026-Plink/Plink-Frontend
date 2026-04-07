@@ -1,6 +1,7 @@
 //packages
 import styled from "styled-components"
 import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 //assets
 import next_arrow from "../assets/arrow_previous.svg";
@@ -125,7 +126,8 @@ const PreviousIcon = styled.img`
     width: 30px;
     height: 30px;
     flex-shrink: 0;
-    aspect-ratio: 29/30;
+    aspect-ratio: 1/1;
+    cursor: pointer;
 `;
 const NextIcon = styled.img`
     width: 30px;
@@ -133,6 +135,7 @@ const NextIcon = styled.img`
     transform: rotate(180deg);
     flex-shrink: 0;
     aspect-ratio: 1/1;
+    cursor: pointer;
 `;
 const MonthText = styled.span`
     color: var(--Light-Green-3, #90A442);
@@ -261,15 +264,17 @@ export default function SchedulePage(){
         "September", "October", "November", "December"
     ];
 
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDay();
-    const today = date.getDate();
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const prevLastDate = new Date(year, month, 0).getDate();
+    const today = new Date();
+    const todayDate = today.getDate();
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
+    
+    const [currentYear, setCurrentYear] = useState(todayYear);
+    const [currentMonth, setCurrentMonth] = useState(todayMonth);
+    
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const prevLastDate = new Date(currentYear, currentMonth, 0).getDate();
     
     // 1️⃣ 이전 달 채우기
     const dates = [];
@@ -278,17 +283,21 @@ export default function SchedulePage(){
     for (let i = firstDay - 1; i >= 0; i--) {
         dates.push({ day: prevLastDate - i, isCurrent: false });
     }
-    
     // 현재 달 채우기
     for (let i = 1; i <= lastDate; i++) {
         dates.push({ day: i, isCurrent: true });
     }
-    
     // 다음 달 채우기 (35칸 맞추기)
     const nextDays = 35 - dates.length;
     for (let i = 1; i <= nextDays; i++) {
         dates.push({ day: i, isCurrent: false });
     }
+
+    const MonthMove = (value) => {
+        const newDate = new Date(currentYear, currentMonth + value, 1);
+        setCurrentYear(newDate.getFullYear());
+        setCurrentMonth(newDate.getMonth());
+    };
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -329,10 +338,13 @@ export default function SchedulePage(){
         {date: "4/30", task: "리디자인 프로젝트", detail: "UX 리서치"},
         {date: "4/30", task: "리디자인 프로젝트", detail: "UX 리서치"},
         {date: "4/30", task: "리디자인 프로젝트", detail: "UX 리서치"},
+        {date: "5/30", task: "리디자인 프로젝트", detail: "UX 리서치"},
     ];
     const taskCount = TaskData.reduce((acc, cur) => {
-        const day = Number(cur.date.split("/")[1]);
-        acc[day] = (acc[day] || 0) + 1;
+        const [m, d] = cur.date.split("/").map(Number);
+        if (m === currentMonth + 1) {
+            acc[d] = (acc[d] || 0) + 1;
+        }
         return acc;
     }, {});
 
@@ -386,16 +398,18 @@ export default function SchedulePage(){
                     <MainBox>
                         <CalenderBox>
                             <CalenderTopWapper>
-                                <PreviousIcon src={previous_arrow} />
-                                <MonthText>{months[month]}</MonthText>
-                                <NextIcon src={previous_arrow} />
+                                <PreviousIcon src={previous_arrow} onClick={() => MonthMove(-1)} />
+                                <MonthText>{months[currentMonth]}</MonthText>
+                                <NextIcon src={previous_arrow} onClick={() => MonthMove(1)} />
                             </CalenderTopWapper>
                             <CalenderWapper>
                             <DateGrid>
                                 {dates.map((d, i) => {
                                     const count = d.isCurrent ? taskCount[d.day] || 0 : 0;
                                     return(
-                                        <DateCell key={i} $isCurrent={d.isCurrent} $count={count} $isToday={d.isCurrent && d.day === today}>
+                                        <DateCell key={i} $isCurrent={d.isCurrent} $count={count} $isToday={d.isCurrent && d.day === todayDate 
+                                            && currentMonth === todayMonth && currentYear === todayYear
+                                        }>
                                             {d.day}
                                         </DateCell>
                                     );
@@ -405,6 +419,10 @@ export default function SchedulePage(){
                         </CalenderBox>
                         <TasksBox>
                             {[...TaskData]
+                                .filter((t) => {
+                                    const m = Number(t.date.split("/")[0]);
+                                    return m === currentMonth + 1;  // 현재 달만 표시
+                                })
                                 .sort((a, b) => {
                                     const aDate = Number(a.date.split("/")[1]);
                                     const bDate = Number(b.date.split("/")[1]);
