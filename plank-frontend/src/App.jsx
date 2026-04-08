@@ -15,8 +15,8 @@ import TeamSelectPage from "./components/team_select";
 import ChatInfo from "./components/chat_info";
 import TeamModify from "./components/team_detail";
 import TeamDetailCreatePage from "./components/team_detail";
-import Nofitication from "./components/nofitication"; 
 import Mypage_user from "./components/mypage_user";
+import NotificationPage from "./components/nofitication";
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
         <Route path="/chatinfo" element={<ChatInfo />} />
         <Route path="/team-modify" element={<TeamModify />} />
         <Route path="/team-detail" element={<TeamDetailCreatePage />} />
-        <Route path="/nofitication" element={<Nofitication />} />
+        <Route path="/notification" element={ <NotificationPage /> } />
         <Route path="/mypage_user" element={<Mypage_user />} />
 
       </Routes>

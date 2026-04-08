@@ -6,7 +6,7 @@ import { useState } from "react";
 //assets, components
 import Backbtn from '../assets/back-button.svg';
 import logo from '../assets/logo.svg';
-import { GlobalStyle } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
 
 //css
 export const Container = styled.div`

@@ -25,7 +25,7 @@ import alarm from "../assets/alarm.svg";
 import setting from "../assets/setting.svg";
 import logo from "../assets/logo.svg";
 //components
-import { Menu } from "./team_page";
+import { Menu } from "../pages/homePage";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";
@@ -34,7 +34,7 @@ import { Icon } from "../pages/homePage";
 import { Text } from "../pages/homePage";
 import { Line } from "../pages/homePage";
 
-import { GlobalStyle } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
 import { PageLayout } from "./schedule_page";
 import { ContentBox } from "./schedule_page";
 import { Layout } from "./chat_page";

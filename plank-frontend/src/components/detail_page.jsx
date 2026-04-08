@@ -20,9 +20,9 @@ import setting from "../assets/setting.svg";
 import logo from "../assets/logo.svg";
 //components
 import backIcon from "../assets/detail_back_icon.svg";
-import { GlobalStyle } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
 
-import { Menu } from "./team_page";
+import { Menu } from "../pages/homePage";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";

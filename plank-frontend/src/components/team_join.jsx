@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 //asset, styled-components
 import backbtn from "../assets/back-button.svg";
 import logo from "../assets/logo.svg";
-import { GlobalStyle } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
 import { Container } from "./team_create";
 import { Title } from "./team_create";
 import { TeamNameInput } from "./team_create";

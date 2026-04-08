@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 //assets, components
-import { GlobalStyle } from "./team_page";
 import search from "../assets/search_icon.png";
 import detail_down_icon from "../assets/state_down.svg";
 import menu from "../assets/menu.svg";
@@ -26,7 +25,8 @@ import alarm from '../assets/alarm.svg';
 import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 
-import { Menu } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
+import { Menu } from "../pages/homePage";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";
@@ -352,8 +352,7 @@ export default function ChatPage(){
         { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" }
     ];
 
-    const isAlarmActive = location.pathname === "/alarm";
-    const isSettingActive = location.pathname === "/setting";
+    const isAlarmActive = location.pathname === "/notification";
 
     const [openMenu, setOpenMenu] = useState(false);
     const [currentState, setCurrentState] = useState(states[0]);
@@ -444,7 +443,7 @@ export default function ChatPage(){
                         <Line />
 
                         {/* 🔔 알림 */}
-                        <Item onClick={() => navigate("/alarm")}>
+                        <Item onClick={() => navigate("/notification")}>
                             <Background $active={isAlarmActive} />
                             <Icon src={alarm} />
                             <Text className="text">NOTIFICATIONS</Text>

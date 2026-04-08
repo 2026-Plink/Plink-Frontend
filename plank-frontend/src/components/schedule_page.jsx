@@ -24,8 +24,8 @@ import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 
 //components
-import { GlobalStyle } from "./team_page";
-import { Menu } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
+import { Menu } from "../pages/homePage";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";
@@ -44,6 +44,7 @@ export const ContentBox = styled.div`
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
+    margin-left: 130px;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -310,8 +311,7 @@ export default function SchedulePage(){
         { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" }
     ];
 
-    const isAlarmActive = location.pathname === "/alarm";
-    const isSettingActive = location.pathname === "/setting";
+    const isAlarmActive = location.pathname === "/notification";
 
     //프로젝트 더미 데이터
     const scheduleData = [
@@ -378,7 +378,7 @@ export default function SchedulePage(){
                     <Line />
 
                     {/* 🔔 알림 */}
-                    <Item onClick={() => navigate("/alarm")}>
+                    <Item onClick={() => navigate("/notification")}>
                         <Background $active={isAlarmActive} />
                         <Icon src={alarm} />
                         <Text className="text">NOTIFICATIONS</Text>
