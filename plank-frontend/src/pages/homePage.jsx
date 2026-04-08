@@ -9,7 +9,7 @@ import calendarIcon from '../assets/calendar.svg';
 import pen from '../assets/pen.svg';
 import chat from '../assets/chat.svg';
 import icon from '../assets/icon.svg';
-import alarm from '../assets/alarm.svg';
+import alarm from '../assets/alarm.svg'; // 알림 아이콘
 import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 import profile from '../assets/profile.svg';
@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
     body { background-color: #FFF; overflow-x: hidden; }
 `;
 
-/* --- Sidebar Components --- */
+/* --- Styled Components (생략 없이 유지) --- */
 export const Menu = styled.div`
     height: 100vh; width: 130px; background-color: #F9F9F8; transition: 0.3s ease-in-out;
     display: flex; flex-direction: column; align-items: center; position: fixed; z-index: 10;
@@ -36,33 +36,9 @@ export const Menu = styled.div`
     &:hover .symbol { display: none; }
     &:hover .logo { display: block; }
 `;
-
-export const Symbol = styled.img`
-    height: 70px;
-    width: 62px;
-    margin-top: 65px;
-    margin-bottom: 50px;
-`;
-
-export const Logo = styled.img`
-    width: 132px;
-    height: 65px;
-    margin-top: 65px;
-    margin-bottom: 50px;
-    display: none;
-`;
-
-export const Item = styled.div`
-    width: 100%;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    position: relative;
-    cursor: pointer;
-    background-color: #F9F9F8;
-`;
-
+export const Symbol = styled.img` height: 70px; width: 62px; margin-top: 65px; margin-bottom: 50px; `;
+export const Logo = styled.img` width: 132px; height: 65px; margin-top: 65px; margin-bottom: 50px; display: none; `;
+export const Item = styled.div` width: 100%; height: 70px; display: flex; align-items: center; padding-left: 30px; position: relative; cursor: pointer; `;
 export const Background = styled.div`
     width: 52px; height: 52px; position: absolute; left: 37px; top: 50%; transform: translateY(-50%);
     background: #FFF; border-radius: 50%;
@@ -79,13 +55,12 @@ export const Text = styled.span`
 `;
 export const Line = styled.div` width: 60px; height: 1px; background-color: #E5E5E5; margin: 30px 0; transition: 0.3s; ${Menu}:hover & { width: 240px; } `;
 
-/* --- Layout --- */
 const Container = styled.div` display: flex; width: 100vw; height: 100vh; `;
 const MainContent = styled.div` flex: 1; margin-left: 130px; display: grid; grid-template-columns: 380px 1fr; height: 100vh; `;
 const LeftPanel = styled.div` border-right: 1px solid #EDEDED; padding: 60px 35px; display: flex; flex-direction: column; overflow-y: auto; `;
 const MiddlePanel = styled.div` padding: 60px 80px; overflow-y: auto; `;
 
-/* --- Mini Calendar --- */
+/* --- Mini Calendar & UI Components --- */
 const MiniCalendar = ({ currentViewDate, setCurrentViewDate }) => {
     const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -102,9 +77,9 @@ const MiniCalendar = ({ currentViewDate, setCurrentViewDate }) => {
     return (
         <div style={{ marginTop: '30px', borderTop: '1px solid #EEE', paddingTop: '30px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <img src={calendar_left} style={{ width: 24, height: 24, cursor: 'pointer' }} onClick={() => setCurrentViewDate(new Date(year, month - 1, 1))} />
+                <img src={calendar_left} style={{ width: 24, height: 24, cursor: 'pointer' }} onClick={() => setCurrentViewDate(new Date(year, month - 1, 1))} alt="left" />
                 <span style={{ color: '#C0DA58', fontWeight: 700, fontSize: '18px' }}>{monthNames[month]}</span>
-                <img src={calendar_right} style={{ width: 24, height: 24, cursor: 'pointer' }} onClick={() => setCurrentViewDate(new Date(year, month + 1, 1))} />
+                <img src={calendar_right} style={{ width: 24, height: 24, cursor: 'pointer' }} onClick={() => setCurrentViewDate(new Date(year, month + 1, 1))} alt="right" />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', rowGap: '15px' }}>
                 {days.map(day => <span key={day} style={{ fontSize: '10px', color: '#BBB', fontWeight: 800 }}>{day}</span>)}
@@ -119,7 +94,6 @@ const MiniCalendar = ({ currentViewDate, setCurrentViewDate }) => {
     );
 };
 
-/* --- UI Components --- */
 const Card = styled.div` background: #FFF; border: 1px solid #F3F3F3; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 20px; margin-top: 15px; `;
 const CardDate = styled.div` font-size: 20px; font-weight: 700; color: #C0DA58; `;
 const WeeklyNav = styled.div` display: flex; align-items: center; justify-content: space-between; margin: 30px 0; padding-bottom: 30px; border-bottom: 1px solid #F0F0F0; `;
@@ -139,11 +113,10 @@ export default function HomePage() {
     const [currentViewDate, setCurrentViewDate] = useState(new Date());
     const [weekStartDate, setWeekStartDate] = useState(() => { const d = new Date(); d.setDate(d.getDate() - d.getDay()); return d; });
 
-    // 상태 관리
     const [openPopup, setOpenPopup] = useState(null);
-    const [editMode, setEditMode] = useState(null); // 'project' or 'todo'
-    const [deleteMode, setDeleteMode] = useState(null); // 'project' or 'todo'
-    const [addingTo, setAddingTo] = useState(null); // 'project' or 'todo'
+    const [editMode, setEditMode] = useState(null);
+    const [deleteMode, setDeleteMode] = useState(null);
+    const [addingTo, setAddingTo] = useState(null);
     const [editingId, setEditingId] = useState(null);
 
     const [projects, setProjects] = useState([
@@ -169,7 +142,6 @@ export default function HomePage() {
         return { day: d.getDate(), full: d.toDateString(), event: [15, 17, 20].includes(d.getDate()) };
     });
 
-    // 기능 로직
     const handleBoxClick = (id, section) => {
         if (deleteMode === section) {
             if (section === 'project') setProjects(projects.filter(p => p.id !== id));
@@ -180,16 +152,12 @@ export default function HomePage() {
         }
     };
 
-    const handleTextClick = (id, section) => {
-        if (editMode === section) setEditingId(id);
-    };
-
+    const handleTextClick = (id, section) => { if (editMode === section) setEditingId(id); };
     const handleEditComplete = (id, newText, section) => {
         if (section === 'project') setProjects(projects.map(p => p.id === id ? { ...p, text: newText } : p));
         else setTodos(todos.map(t => t.id === id ? { ...t, text: newText } : t));
         setEditingId(null);
     };
-
     const handleAddItem = (e, section) => {
         if (e.key === 'Enter' && e.target.value.trim()) {
             const newItem = { id: Date.now(), text: e.target.value, checked: false };
@@ -199,24 +167,20 @@ export default function HomePage() {
         }
     };
 
-    const resetModes = () => {
-        setOpenPopup(null); setEditMode(null); setDeleteMode(null); setAddingTo(null); setEditingId(null);
-    };
-
     return (
-        <Container onClick={resetModes}>
+        <Container onClick={() => {setOpenPopup(null); setEditMode(null); setDeleteMode(null); setAddingTo(null); setEditingId(null);}}>
             <GlobalStyle />
-            <Menu>
+            <Menu onClick={(e) => e.stopPropagation()}>
                 <Symbol className="symbol" src={symbol} />
                 <Logo className="logo" src={logo} />
-                <Item onClick={() => navigate("/homePage")}><Background $active={true} /><Icon src={in_home} /><Text className="text">HOME</Text></Item>
+                <Item onClick={() => navigate("/homepage")}><Background $active={true} /><Icon src={in_home} /><Text className="text">HOME</Text></Item>
                 <Item onClick={() => navigate("/schedule")}><Background $active={false} /><Icon src={calendarIcon} /><Text className="text">SCHEDULE</Text></Item>
                 <Item onClick={() => navigate("/project")}><Background $active={false} /><Icon src={pen} /><Text className="text">PROJECT</Text></Item>
                 <Item onClick={() => navigate("/chat")}><Background $active={false} /><Icon src={chat} /><Text className="text">CHATTING</Text></Item>
                 <Item onClick={() => navigate("/mypage")}><Background $active={false} /><Icon src={icon} /><Text className="text">MY PAGE</Text></Item>
                 <Line />
-                <Item onClick={() => navigate("/alarm")}><Icon src={alarm} /><Text className="text">ALARM</Text></Item>
-                <Item onClick={() => navigate("/setting")}><Icon src={setting} /><Text className="text">SETTING</Text></Item>
+                {/* 에러 지점 해결: alarm 아이콘을 사용 */}
+                <Item onClick={() => navigate("/nofitication")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
             </Menu>
 
             <MainContent>
@@ -230,9 +194,9 @@ export default function HomePage() {
                     </div>
                     <MiniCalendar currentViewDate={currentViewDate} setCurrentViewDate={setCurrentViewDate} />
                     <div style={{ marginTop: '30px' }}>
-                        <Card><CardDate>15</CardDate><div style={{marginLeft:20}}><div style={{fontSize:14, fontWeight:600}}>UIUX 개선 프로젝트</div><div style={{fontSize:12, color:'#AAA'}}>UX 리서치</div></div></Card>
-                        <Card><CardDate>18</CardDate><div style={{marginLeft:20}}><div style={{fontSize:14, fontWeight:600}}>UIUX 개선 프로젝트</div><div style={{fontSize:12, color:'#AAA'}}>그래픽 디자인</div></div></Card>
-                        <Card><CardDate>20</CardDate><div style={{marginLeft:20}}><div style={{fontSize:14, fontWeight:600}}>키오스크 개선 프로젝트</div><div style={{fontSize:12, color:'#AAA'}}>휴리스틱 평가</div></div></Card>
+                        {[15, 18, 20].map(d => (
+                            <Card key={d}><CardDate>{d}</CardDate><div style={{marginLeft:20}}><div style={{fontSize:14, fontWeight:600}}>프로젝트 업무</div><div style={{fontSize:12, color:'#AAA'}}>세부 내용</div></div></Card>
+                        ))}
                     </div>
                 </LeftPanel>
 
@@ -240,14 +204,13 @@ export default function HomePage() {
                     <h2 style={{ fontSize: 32, fontWeight: 800 }}>Today</h2>
                     <p style={{ color: '#AAA', marginTop: 5 }}>{getWeekLabel(weekStartDate)}</p>
                     <WeeklyNav>
-                        <img src={week_left} style={{ width: 42, height: 42, cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); setWeekStartDate(new Date(weekStartDate.setDate(weekStartDate.getDate() - 7))); }} />
+                        <img src={week_left} style={{ width: 42, height: 42, cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); setWeekStartDate(new Date(weekStartDate.setDate(weekStartDate.getDate() - 7))); }} alt="prev" />
                         {weekDates.map((item, idx) => (
                             <DayItem key={idx}><DayNum $active={item.full === new Date().toDateString()}>{item.day}</DayNum><DayDot $has={item.event} /></DayItem>
                         ))}
-                        <img src={week_right} style={{ width: 42, height: 42, cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); setWeekStartDate(new Date(weekStartDate.setDate(weekStartDate.getDate() + 7))); }} />
+                        <img src={week_right} style={{ width: 42, height: 42, cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); setWeekStartDate(new Date(weekStartDate.setDate(weekStartDate.getDate() + 7))); }} alt="next" />
                     </WeeklyNav>
 
-                    {/* 프로젝트 & 투두 공통 렌더링 */}
                     {['project', 'todo'].map(section => (
                         <div key={section} style={{marginTop: 40}}>
                             <TaskHeader onClick={(e) => e.stopPropagation()}>
@@ -263,17 +226,11 @@ export default function HomePage() {
                             </TaskHeader>
                             {(section === 'project' ? projects : todos).map(item => (
                                 <TaskRow key={item.id} onClick={(e) => e.stopPropagation()}>
-                                    <CustomCheckBox 
-                                        $checked={item.checked} 
-                                        $deleteMode={deleteMode === section}
-                                        onClick={() => handleBoxClick(item.id, section)} 
-                                    />
+                                    <CustomCheckBox $checked={item.checked} $deleteMode={deleteMode === section} onClick={() => handleBoxClick(item.id, section)} />
                                     {editingId === item.id ? (
                                         <EditInput autoFocus defaultValue={item.text} onKeyDown={(e) => e.key === 'Enter' && handleEditComplete(item.id, e.target.value, section)} onBlur={(e) => handleEditComplete(item.id, e.target.value, section)} />
                                     ) : (
-                                        <span style={{ fontSize: 17, fontWeight: 500, cursor: editMode === section ? 'text' : 'default' }} onClick={() => handleTextClick(item.id, section)}>
-                                            {item.text}
-                                        </span>
+                                        <span style={{ fontSize: 17, fontWeight: 500, cursor: editMode === section ? 'text' : 'default' }} onClick={() => handleTextClick(item.id, section)}>{item.text}</span>
                                     )}
                                 </TaskRow>
                             ))}

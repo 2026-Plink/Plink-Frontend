@@ -1,10 +1,10 @@
-//packages
+// packages
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-//components
+// components & pages
 import TeamCreate from "./components/team_create";
 import Login from "./pages/login";
-import HomePage  from "./pages/homePage";
+import HomePage from "./pages/homePage";
 import TeamJoin from "./components/team_join";
 import TeamPage from "./components/team_page";
 import SchedulePage from "./components/schedule_page";
@@ -15,29 +15,32 @@ import TeamSelectPage from "./components/team_select";
 import ChatInfo from "./components/chat_info";
 import TeamModify from "./components/team_detail";
 import TeamDetailCreatePage from "./components/team_detail";
+import Nofitication from "./components/nofitication"; 
+import Mypage_user from "./components/mypage_user";
 
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={ <Login /> } />
-          <Route path="/team-create" element={< TeamCreate />} />
-          <Route path="/homepage" element={ < HomePage /> }/>
-          <Route path="/team-join" element={ <TeamJoin /> } />
-          <Route path="/project" element={< TeamPage />} />
-          <Route path="/schedule" element={ <SchedulePage /> } />
-          <Route path="/chat" element={ <ChatPage /> } />
-          <Route path="/detail-page" element={ <TeamDetailPage /> } />
-          <Route path="/mypage" element={ <Mypage/>}/>
-          <Route path="/team-select" element={ <TeamSelectPage /> } />
-          <Route path="/chatinfo" element={ <ChatInfo /> } />
-          <Route path="/team-modify" element={ <TeamModify /> } />
-          <Route path="/team-detail" element={ <TeamDetailCreatePage /> } />
-        </Routes>
-      </Router>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/team-create" element={<TeamCreate />} />
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/team-join" element={<TeamJoin />} />
+        <Route path="/project" element={<TeamPage />} />
+        <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/detail-page" element={<TeamDetailPage />} />
+        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/team-select" element={<TeamSelectPage />} />
+        <Route path="/chatinfo" element={<ChatInfo />} />
+        <Route path="/team-modify" element={<TeamModify />} />
+        <Route path="/team-detail" element={<TeamDetailCreatePage />} />
+        <Route path="/nofitication" element={<Nofitication />} />
+        <Route path="/mypage_user" element={<Mypage_user />} />
+
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

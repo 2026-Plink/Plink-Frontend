@@ -27,6 +27,7 @@ import mypage_user from '../assets/mypage_user.svg';
 import mypage_info from '../assets/mypage_info.svg';
 import mypage_question from '../assets/mypage_question.svg';
 import mypage_logout from '../assets/mypage_logout.svg';
+import Nofitication from "./nofitication";
 
 /* --- Global Styles --- */
 export const GlobalStyle = createGlobalStyle`
@@ -157,8 +158,7 @@ export default function MyPage() {
                     </Item>
                 ))}
                 <Line />
-                <Item onClick={() => navigate("/alarm")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
-                <Item onClick={() => navigate("/setting")}><Icon src={setting} /><Text className="text">SETTING</Text></Item>
+                <Item onClick={() => navigate("/nofitication")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
             </Menu>
 
             <MainContent>
@@ -198,7 +198,7 @@ export default function MyPage() {
 
                     <MenuList>
                         <MenuListItem><img src={mypage_message} alt="Notice" /> 공지 사항</MenuListItem>
-                        <MenuListItem $border><img src={mypage_user} alt="Account" /> 계정 관리</MenuListItem>
+                        <MenuListItem onClick={() => navigate("/mypage_user")} $border><img src={mypage_user} alt="Account"/> 계정 관리</MenuListItem>
                         
                         <MenuListItem style={{marginTop: "20px"}}><img src={mypage_info} alt="Info" /> 정보</MenuListItem>
                         <MenuListItem $border><img src={mypage_question} alt="Question" /> 문의하기</MenuListItem>
