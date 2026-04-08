@@ -6,7 +6,7 @@ import { useState } from "react";
 import plank_logo from "../assets/logo.svg";
 import back_icon from "../assets/back-button.svg";
 //componets
-import { GlobalStyle } from "./team_page";
+import { GlobalStyle } from "../pages/homePage";
 import { Title } from "./team_create";
 import { SumbitButton } from "./team_create";
 import { BackButton } from "./team_create";

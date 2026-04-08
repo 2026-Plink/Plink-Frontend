@@ -38,7 +38,9 @@ export const Menu = styled.div`
 `;
 export const Symbol = styled.img` height: 70px; width: 62px; margin-top: 65px; margin-bottom: 50px; `;
 export const Logo = styled.img` width: 132px; height: 65px; margin-top: 65px; margin-bottom: 50px; display: none; `;
-export const Item = styled.div` width: 100%; height: 70px; display: flex; align-items: center; padding-left: 30px; position: relative; cursor: pointer; `;
+export const Item = styled.div` width: 100%; height: 70px; display: flex; align-items: center; padding-left: 30px; position: relative; cursor: pointer;
+    background-color: #F9F9F8;
+`;
 export const Background = styled.div`
     width: 52px; height: 52px; position: absolute; left: 37px; top: 50%; transform: translateY(-50%);
     background: #FFF; border-radius: 50%;
@@ -180,7 +182,7 @@ export default function HomePage() {
                 <Item onClick={() => navigate("/mypage")}><Background $active={false} /><Icon src={icon} /><Text className="text">MY PAGE</Text></Item>
                 <Line />
                 {/* 에러 지점 해결: alarm 아이콘을 사용 */}
-                <Item onClick={() => navigate("/nofitication")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
+                <Item onClick={() => navigate("/notification")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
             </Menu>
 
             <MainContent>

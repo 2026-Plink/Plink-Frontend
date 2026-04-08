@@ -158,7 +158,7 @@ export default function MyPage() {
                     </Item>
                 ))}
                 <Line />
-                <Item onClick={() => navigate("/nofitication")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
+                <Item onClick={() => navigate("/notification")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
             </Menu>
 
             <MainContent>

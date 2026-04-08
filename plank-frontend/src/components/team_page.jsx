@@ -27,6 +27,8 @@ import alarm from "../assets/alarm.svg";
 import setting from "../assets/setting.svg";
 import logo from "../assets/logo.svg";
 
+import { GlobalStyle } from "../pages/homePage";
+import { Menu } from "../pages/homePage";
 import { Symbol } from "../pages/homePage";
 import { Logo } from "../pages/homePage";
 import { Item } from "../pages/homePage";
@@ -37,40 +39,6 @@ import { Line } from "../pages/homePage";
 import { PageLayout } from "./schedule_page";
 import { ContentBox } from "./schedule_page";
 
-//css
-export const GlobalStyle = createGlobalStyle`
-    *{
-        font-family: Pretendard;
-        margin : 0;
-        padding : 0;
-        box-sizing: border-box;
-        background-color: #FFF;
-    }
-`;
-export const Menu = styled.div`
-  height: 100vh;
-  width: 130px;
-  background-color: #f9f9f8;
-  transition: 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 10;
-
-  &:hover {
-    width: 300px;
-  }
-  &:hover .text {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  &:hover .symbol {
-    display: none;
-  }
-  &:hover .logo {
-    display: block;
-  }
-`;
 const HeaderBar = styled.header`
   display: flex;
   align-items: center;
@@ -318,18 +286,11 @@ export default function TeamPage() {
 
   const menus = [
     { path: "/homePage", icon: home, activeIcon: in_home, label: "HOME" },
-    {
-      path: "/schedule",
-      icon: calendar,
-      activeIcon: in_calendar,
-      label: "SCHEDULE",
-    },
+    { path: "/schedule", icon: calendar, activeIcon: in_calendar, label: "SCHEDULE" },
     { path: "/project", icon: pen, activeIcon: in_pen, label: "PROJECT" },
     { path: "/chat", icon: chat, activeIcon: in_chat, label: "CHATTING" },
-    { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" },
-  ];
-
-  const isAlarmActive = location.pathname === "/alarm";
+    { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" }
+];
 
   //프로젝트 더미 데이터
   const [teams, setTeams] = useState([
@@ -376,31 +337,17 @@ export default function TeamPage() {
       <GlobalStyle />
       <PageLayout>
         <Menu>
-          <Symbol className="symbol" src={symbol} />
-          <Logo className="logo" src={logo} />
-
-          {menus.map((menu) => {
-            const isActive = location.pathname === menu.path;
-
-            return (
-              <Item key={menu.path} onClick={() => navigate(menu.path)}>
-                <Background $active={isActive} />
-
-                <Icon src={isActive ? menu.activeIcon : menu.icon} />
-
-                <Text className="text">{menu.label}</Text>
-              </Item>
-            );
-          })}
-
-          <Line />
-
-          {/* 🔔 알림 */}
-          <Item onClick={() => navigate("/alarm")}>
-            <Background $active={isAlarmActive} />
-            <Icon src={alarm} />
-            <Text className="text">NOTIFICATIONS</Text>
-          </Item>
+            <Symbol className="symbol" src={symbol} />
+            <Logo className="logo" src={logo} />
+            {menus.map((m) => (
+                <Item key={m.path} onClick={() => navigate(m.path)}>
+                    <Background $active={location.pathname === m.path} />
+                    <Icon src={location.pathname === m.path ? m.activeIcon : m.icon} />
+                    <Text className="text">{m.label}</Text>
+                </Item>
+            ))}
+            <Line />
+            <Item onClick={() => navigate("/notification")}><Icon src={alarm} /><Text className="text">NOTIFICATIONS</Text></Item>
         </Menu>
         <ContentBox>
           <HeaderBar>

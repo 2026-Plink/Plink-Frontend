@@ -142,7 +142,7 @@ export default function mypage_user() {
                     );
                 })}
                 <Line />
-                <Item onClick={() => navigate("/nofitication")}>
+                <Item onClick={() => navigate("/notification")}>
                     <Icon src={alarm} />
                     <Text className="text">NOTIFICATIONS</Text>
                 </Item>
