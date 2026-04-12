@@ -1,5 +1,5 @@
 //packages
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -43,6 +43,75 @@ const HeaderText = styled.span`
     font-weight: 600;
     line-height: normal;
 `;
+const AlarmBox = styled.div`
+    margin: 8% 0 1% 10%;
+    display: flex;
+    flex-direction: column;
+`;
+const NotificationText = styled.span`
+    color: var(--Gray-6, #959794);
+    font-feature-settings: 'ss05' on;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%; /* 25.2px */
+    letter-spacing: 0.15px;
+`;
+const AlarmWapper = styled.div`
+    margin-bottom: 10px;
+    display: flex;
+    width: 1200px;
+    height: 96px;
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 16px;
+    background: var(--white-1, #FFF);
+    box-shadow: 0 0 11.9px 2px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+        border-radius: 16px;
+        border: 1px solid var(--Light-Green-2, #C0DA58);
+        background: var(--white-1, #FFF);
+        box-shadow: 0 0 30px 2px rgba(192, 218, 88, 0.30);
+    }
+    &:hover ${NotificationText},
+    &:active ${NotificationText}{
+        color: var(--Light-Green-3, #90A442);
+    }
+`;
+const TextWapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    flex: 1;
+`;
+const MessageText = styled.span`
+    color: var(--Gray-6, #959794);
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 16.8px */
+`;
+const StateText = styled.span`
+    color: var(--Gray-7, #70716F);
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 16.8px */
+`;
+
+const messageState = [
+    {value: "안 읽음",state: "NOREAD"},
+    {value: "읽음", state: "READ"}
+];
 
 export default function NotificationPage() {
     const navigate = useNavigate();
@@ -55,6 +124,29 @@ export default function NotificationPage() {
         { path: "/chat", icon: chat, activeIcon: in_chat, label: "CHATTING" },
         { path: "/mypage", icon: icon, activeIcon: in_icon, label: "MY PAGE" }
     ];
+
+    //message 더미데이터 로컬스토리지대신 db로 가능하게 변경
+    const [messages, setMessages] = useState(() => {
+        const saved = localStorage.getItem("notifications");
+        return saved ? JSON.parse(saved) : [
+          {headertext: "프로젝트 마감", message: "UI/UX 개선 프로젝트의 마감일이 3일 남았습니다.", state: "NOREAD", send: "project"},
+          {headertext: "피드백", message: "피드백이 추가되었습니다.", state: "NOREAD", send: "chat"},
+          {headertext: "채팅", message: "안녕하세요 반갑습니다.", state: "NOREAD", send: "chat"},
+          {headertext: "채팅", message: "채팅이 왔습니다.", state: "NOREAD", send: "chat"},
+        ];
+      });
+
+    // 알림 정보 저장되는 로직으로 변경
+    useEffect(() => {
+    localStorage.setItem("notifications", JSON.stringify(messages));
+    }, [messages]);
+
+    const handleRead = (index, send) => {
+        setMessages((prev) =>
+          prev.map((msg, i) => (i === index ? { ...msg, state: "READ" } : msg))
+        );
+        navigate(`/${send}`);
+      };
 
     return (
         <>
@@ -78,7 +170,20 @@ export default function NotificationPage() {
                     </Item>
                 </Menu>
                 <ContentBox>
-
+                    <HeaderBox>
+                        <HeaderText>알림</HeaderText>
+                    </HeaderBox>
+                    <AlarmBox>
+                        {messages.map((message, index) => (
+                            <AlarmWapper key={index} onClick={() => handleRead(index, message.send)}>
+                                <TextWapper>
+                                    <NotificationText>{message.headertext}</NotificationText>
+                                    <MessageText>{message.message}</MessageText>
+                                </TextWapper>
+                                <StateText>{messageState.find(item => item.state === message.state)?.value}</StateText>
+                            </AlarmWapper>
+                        ))}
+                    </AlarmBox>
                 </ContentBox>
             </PageLayout>
         </>

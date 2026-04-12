@@ -18,6 +18,10 @@ import in_icon from "../assets/in_icon.svg";
 import alarm from "../assets/alarm.svg";
 import setting from "../assets/setting.svg";
 import logo from "../assets/logo.svg";
+import user_icon from "../assets/default_user_icon.svg";
+import extra_icon from "../assets/over_member_icon.svg";
+
+import teamLogo from "../assets/logo.svg";
 //components
 import backIcon from "../assets/detail_back_icon.svg";
 import { GlobalStyle } from "../pages/homePage";
@@ -34,27 +38,28 @@ import { PageLayout } from "./schedule_page";
 import { ContentBox } from "./schedule_page";
 
 //css
-const TextLine = styled.div`
+export const TextLine = styled.div`
   width: 100%;
   height: 1px;
   background: #c9c9c8;
   margin-bottom: 0;
   margin-top: ${({ $margin_size }) => $margin_size}px;
+  flex-shrink: 0;
 `;
-const Wapper = styled.div`
+export const Wapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 5%;
+  margin-top: 1%;
   margin-left: 12%;
 `;
-const BackWapper = styled.div`
+export const BackWapper = styled.div`
   margin: 2%;
   padding: 5px;
   display: flex;
   align-items: center;
   cursor: pointer;
 `;
-const BackText = styled.span`
+export const BackText = styled.span`
   color: var(--Gray-7, #70716f);
   font-feature-settings: "ss05" on;
   font-size: 20px;
@@ -62,16 +67,16 @@ const BackText = styled.span`
   font-weight: 500;
   line-height: normal;
 `;
-const TeamIcon = styled.img`
+const ProjectIcon = styled.img`
   width: 28px;
   height: 28px;
   aspect-ratio: 1/1;
 `;
-const TeamLogo = styled.img`
+const ProjectLogo = styled.img`
   width: 142px;
   height: 142px;
 `;
-const TeamName = styled.span`
+export const ProjectName = styled.span`
   color: var(--Grey-grey-12, #2c2c2c);
   font-feature-settings: "ss05" on;
   font-family: Pretendard;
@@ -79,6 +84,7 @@ const TeamName = styled.span`
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  padding: 10px 0 32px 0;
 `;
 const InfoText = styled.span`
   color: var(--Gray-7, #70716f);
@@ -100,30 +106,50 @@ const DataText = styled.span`
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.022px;
+
 `;
-const TextWapper = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px;
+const UserWapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;
-const UserIcon = styled.img``;
-const NameText = styled.span``;
-const VerticalLine = styled.div`
+export const TextWapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+`;
+const UserIcon = styled.img`
+	width: 28px;
+	height: 28px;
+	aspect-ratio: 1/1;
+`;
+const NameText = styled.span`
+	margin: 0 10px;
+	color: var(--black-1, #000);
+	font-family: Pretendard;
+	font-size: 22px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	align-items: center;
+`;
+export const VerticalLine = styled.div`
   width: 4px;
   height: 50px;
   background: #c0da58;
 `;
-const ExplanText = styled.span`
-  margin: 20px;
-  color: var(--Gray-8, #575856);
-  font-feature-settings: "ss05" on;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 160%; /* 32px */
-  letter-spacing: -0.15px;
+export const ExplanText = styled.span`
+	margin-left: 3.5%;
+	color: var(--Gray-8, #575856);
+	font-feature-settings: 'ss05' on;
+	font-family: Pretendard;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 160%; /* 32px */
+	letter-spacing: -0.15px;
 `;
-const DescriptionText = styled.span`
+export const DescriptionText = styled.span`
   margin-left: 28px;
   align-items: center;
   color: var(--black-1, #000);
@@ -134,14 +160,138 @@ const DescriptionText = styled.span`
   line-height: normal;
   letter-spacing: 0.15px;
 `;
-const FeedBackText = styled.span`
-  color: var(--Gray-8, #575856);
-  font-feature-settings: "ss05" on;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px;
-  letter-spacing: -0.15px;
+export const BottomWapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+`;
+export const TeamBox = styled.div`
+	display: flex;
+	margin-left: 3%;
+	overflow-x: auto;
+    padding-bottom: 10px;
+	scrollbar-width: none;        /* ← Firefox */
+    &::-webkit-scrollbar {
+        display: none;            /* ← Chrome, Safari */
+    }
+`;
+export const TeamWapper = styled.div`
+	width: 380px;
+	height: 210px;
+	border-radius: 20px;
+	background: #FFF;
+	box-shadow: 0 0 11.9px 2px rgba(0, 0, 0, 0.08);
+	margin: 0 5px;
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+`;
+export const NameWapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 5px 0;
+`;
+export const TeamName = styled.span`
+	color: #000;
+	font-family: Pretendard;
+	font-size: 22px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 160%; /* 38.4px */
+	letter-spacing: -0.15px;
+`;
+export const TeamTextWapper = styled.div`
+	display: flex;
+	align-items: center;
+	margin: 10px 20px;
+    position: relative;
+`;
+export const TitleText = styled.span`
+	color: var(--Gray-7, #70716F);
+	font-feature-settings: 'ss05' on;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	width: 50px;
+    flex-shrink: 0;
+	margin-right: 20px;
+`;
+export const MemberWapper = styled.div`
+	display: flex;
+	white-space: nowrap;
+`;
+export const TextIconWapper = styled.div`
+	display: flex;
+	align-items: center;
+`;
+export const MemberIcon = styled.img`
+	width: 28px;
+	height: 28px;
+	aspect-ratio: 1/1;
+`;
+export const MemberName = styled.span`
+	margin: 0 5px;
+	color: var(--black-1, #000);
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	white-space: nowrap;
+`;
+export const TeamDeadLineText = styled.span`
+	color: var(--black-1, #000);
+	font-feature-settings: 'ss05' on;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.022px;
+`;
+export const ContentWapper = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+export const TeamContentText = styled.span`
+	color: var(--black-1, #000);
+	font-feature-settings: 'ss05' on;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.022px;
+	width: 100%;
+`;
+export const ExtraWapper = styled.div`
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	margin: 0 5px;
+`;
+export const ExtraIcon = styled.img`
+	width: 18px;
+	height: 18px;
+	transform: rotate(-90deg);
+	aspect-ratio: 1/1;
+`;
+export const ExtraCount = styled.span`
+	margin-left: 2px;
+	color: var(--black-1, #000);
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+`;
+const MemberRow = styled.div`
+	display: flex;
+	align-items: center;
+
 `;
 
 export default function TeamDetailPage() {
@@ -163,99 +313,167 @@ export default function TeamDetailPage() {
 
   const isAlarmActive = location.pathname === "/alarm";
 
-    // TeamPage에서 넘겨준 팀 데이터 수신
-    const team = {
-        id: null,
-        title: "프로젝트 명",
-        period: "",
-        code: "",
-        members: [],        // ← 반드시 빈 배열로 초기화
-        description: "",
-        feedback: "",
-        ...(location.state?.team ?? {}),  // ← 전달된 값으로 덮어쓰기
-    };
+  // TeamPage에서 넘겨준 팀 데이터 수신
+  const team = {
+    id: null,
+    title: "프로젝트 명",
+    period: "",
+    charge: "",
+    code: "",
+    members: [],
+    description: "",
+	team_explan: [],
+	team_deadline: [],
+    ...(location.state?.team ?? {}), // ← 전달된 값으로 덮어쓰기
+  };
 
   return (
     <>
-      <GlobalStyle />
-      <PageLayout>
-        <Menu>
-          <Symbol className="symbol" src={symbol} />
-          <Logo className="logo" src={logo} />
+		<GlobalStyle />
+    	<PageLayout>
+        	<Menu>
+          		<Symbol className="symbol" src={symbol} />
+          		<Logo className="logo" src={logo} />
 
-          {menus.map((menu) => {
-            const isActive = location.pathname === menu.path;
-            return (
-              <Item key={menu.path} onClick={() => navigate(menu.path)}>
-                <Background $active={isActive} />
-                <Icon src={isActive ? menu.activeIcon : menu.icon} />
-                <Text className="text">{menu.label}</Text>
-              </Item>
-            );
-          })}
+          		{menus.map((menu) => {
+            		const isActive = location.pathname === menu.path;
+            		return (
+              			<Item key={menu.path} onClick={() => navigate(menu.path)}>
+                		<Background $active={isActive} />
+                		<Icon src={isActive ? menu.activeIcon : menu.icon} />
+                		<Text className="text">{menu.label}</Text>
+              			</Item>
+            		);
+          		})}
 
-          <Line />
+          		<Line />
 
-          <Item onClick={() => navigate("/alarm")}>
-            <Background $active={isAlarmActive} />
-            <Icon src={alarm} />
-            <Text className="text">NOTIFICATIONS</Text>
-          </Item>
-        </Menu>
-        <ContentBox>
-          <BackWapper onClick={() => navigate("/project")}>
-            <TeamIcon src={backIcon} />
-            <BackText>돌아가기</BackText>
-          </BackWapper>
-          <TextLine />
+          		<Item onClick={() => navigate("/alarm")}>
+            		<Background $active={isAlarmActive} />
+            		<Icon src={alarm} />
+           			<Text className="text">NOTIFICATIONS</Text>
+          		</Item>
+        	</Menu>
+        	<ContentBox>
+          		<BackWapper onClick={() => navigate("/project")}>
+            	<ProjectIcon src={backIcon} />
+            	<BackText>돌아가기</BackText>
+          		</BackWapper>
+          		<TextLine />
+          		<Wapper>
+            		<ProjectLogo src={team.logo ?? teamLogo} />
+            		<ProjectName>{team.title}</ProjectName>
+					<TextWapper>
+						<InfoText>기간</InfoText>
+						<DataText>{team.period}</DataText>
+					</TextWapper>
+					<TextWapper>
+              			<InfoText>담당</InfoText>
+              			<DataText>{team.charge}</DataText>
+            		</TextWapper>
+            		<TextWapper>
+						<InfoText>참여코드</InfoText>
+						<DataText>{team.code}</DataText>
+					</TextWapper>
+					<TextWapper>
+						<InfoText>참여자</InfoText>
+						<UserWapper>
+							{/* 멤버가 여러 명일 경우 대비해 배열로 렌더링 */}
+							{team.members.length > 0 ? (
+							team.members.map((member, index) => (
+								<MemberRow key={index}>
+									<UserIcon src={user_icon} />
+									<NameText>{member.name}</NameText>
+								</MemberRow>
+							))
+							) : (
+							<NameText>-</NameText>
+							)}
+						</UserWapper>
+					</TextWapper>
+          		</Wapper>
 
-          <Wapper>
-            <TeamLogo src={team.logo ?? null} />
-            <TeamName>{team.title}</TeamName>
-
-            <TextWapper>
-              <InfoText>기간</InfoText>
-              <DataText>{team.period}</DataText>
-            </TextWapper>
-            <TextWapper>
-              <InfoText>참여코드</InfoText>
-              <DataText>{team.code}</DataText>
-            </TextWapper>
-            <TextWapper>
-              <InfoText>참여자</InfoText>
-              <DataText>
-                {/* 멤버가 여러 명일 경우 대비해 배열로 렌더링 */}
-                {team.members.length > 0 ? (
-                  team.members.map((member, index) => (
-                    <MemberRow key={index}>
-                      <UserIcon />
-                      <NameText>{member.name}</NameText>
-                    </MemberRow>
-                  ))
-                ) : (
-                  <NameText>-</NameText>
-                )}
-              </DataText>
-            </TextWapper>
-          </Wapper>
-
-          <TextLine $margin_size={30} />
-
-          <Wapper>
-            <TextWapper>
-              <VerticalLine />
-              <DescriptionText>설명</DescriptionText>
-            </TextWapper>
-            <ExplanText>{team.description || "-"}</ExplanText>
-
-            <TextWapper>
-              <VerticalLine />
-              <DescriptionText>프로젝트 일정/구성</DescriptionText>
-            </TextWapper>
-            <FeedBackText>{team.feedback || "-"}</FeedBackText>
-          </Wapper>
-        </ContentBox>
-      </PageLayout>
+          		<TextLine $margin_size={10} />
+          		<Wapper>
+					<BottomWapper>
+						<TextWapper>
+							<VerticalLine />
+							<DescriptionText>{team.title}</DescriptionText>
+						</TextWapper>
+						<ExplanText>{team.description || "-"}</ExplanText>
+					</BottomWapper>
+					<BottomWapper>
+						<TextWapper>
+							<VerticalLine />
+							<DescriptionText>프로젝트 일정/구성</DescriptionText>
+						</TextWapper>
+						<TeamBox>
+							{Object.entries(
+								team.members.reduce((acc, member) => {
+									// 배열이면 그대로, 문자열이면 split
+									const teams = Array.isArray(member.join_team) 
+										? member.join_team 
+										: member.join_team.split(",").map(t => t.trim());
+									
+									teams.forEach(teamKey => {
+										if (!acc[teamKey]) acc[teamKey] = [];
+										acc[teamKey].push(member);
+									});
+									return acc;
+								}, {})
+							).map(([teamName, members], index) => (
+								<TeamWapper key={index}>
+									<NameWapper>
+										<TeamName>{teamName}</TeamName>
+									</NameWapper>
+									<TeamTextWapper>
+										<TitleText>참여자</TitleText>
+										<MemberWapper>
+											{/* 첫 두 명만 표시 */}
+											{members.slice(0, 2).map((member, i) => (
+												<TextIconWapper key={i}>
+													<MemberIcon src={user_icon} />
+													<MemberName>{member.name}</MemberName>
+												</TextIconWapper>
+											))}
+											{/* 3명 이상이면 +N 표시 */}
+											{members.length > 2 && (
+												<ExtraWapper>
+													<ExtraIcon src={extra_icon} />
+													<ExtraCount>{members.length - 2}</ExtraCount>
+												</ExtraWapper>
+											)}
+										</MemberWapper>
+									</TeamTextWapper>
+									<TeamTextWapper>
+										<TitleText>기한</TitleText>
+										<TeamDeadLineText>
+											{team.team_deadline?.find(d => d.join_team === teamName)?.deadline ?? "-"}
+										</TeamDeadLineText>
+									</TeamTextWapper>
+									<TeamTextWapper>
+										<TitleText>내용</TitleText>
+										<ContentWapper>
+											{team.team_explan
+											.filter((t) => {
+												const teams = Array.isArray(t.join_team)
+													? t.join_team
+													: t.join_team.split(",").map(t => t.trim());
+												return teams.includes(teamName);
+											})
+											.slice(0, 2)  /* ← 추가 */
+											.map((t, i) => (
+												<TeamContentText key={i}>{t.explan}</TeamContentText>
+											))}
+										</ContentWapper>
+									</TeamTextWapper>
+								</TeamWapper>
+							))}
+						</TeamBox>
+					</BottomWapper>
+				</Wapper>
+        	</ContentBox>
+     	</PageLayout>
     </>
   );
 }
