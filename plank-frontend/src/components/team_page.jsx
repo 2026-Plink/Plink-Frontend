@@ -11,6 +11,7 @@ import modifyIcon from "../assets/modify_icon.svg";
 import hidingIcon from "../assets/hiding_icon.svg";
 import deleteIcon from "../assets/delete_icon.svg";
 import team_icon from "../assets/default_user_icon.svg";
+import hideIcon from "../assets/hiding_down_icon.svg";
 
 import symbol from "../assets/symbol.svg";
 import home from "../assets/home.svg";
@@ -117,9 +118,9 @@ const TeamBarContainer = styled.div`
 
   &:hover {
     border-radius: 16px;
-    border: 1px solid var(--Light-Green-2, #c0da58);
-    background: var(--white-1, #fff);
-    box-shadow: 0 0 11.9px 2px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--Light-Green-2, #C0DA58);
+    background: var(--white-1, #FFF);
+    box-shadow: 0 0 30px 2px rgba(192, 218, 88, 0.30), 0 0 11.9px 2px rgba(0, 0, 0, 0.08);
   }
 `;
 const EllipsisIcon = styled.img`
@@ -177,16 +178,22 @@ const ProgressText = styled.span`
   line-height: normal;
   margin-left: 70%;
 `;
-const BarWapper = styled.div``;
+const BarWapper = styled.div`
+  align-items: center;
+
+`;
 const ProgressBar = styled.div`
   width: 290px;
   height: 2px;
   background: #c9c9c8;
+  border-radius: 10px;
 `;
 const BarFill = styled.div`
+  align-items: center;
   width: ${({ $progress }) => $progress}%;
-  height: 4px;
+  height: 3px;
   background: #c0da58;
+  border-radius: 40px;
 `;
 const DetailText = styled.span`
   color: var(--Gray-7, #70716f);
@@ -279,6 +286,29 @@ const Wapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+const HideWapper = styled.div`
+  display: flex;
+  position: fixed;
+  left: 150px;
+  bottom: 60px;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+`;
+const HideText = styled.span`
+  color: var(--Gray-7, #70716F);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+const HideIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  aspect-ratio: 1/1;
+`;
+
 
 export default function TeamPage() {
   const navigate = useNavigate();
@@ -299,8 +329,31 @@ export default function TeamPage() {
       title: "프로젝트 명",
       period: "03/01 - 06/01",
       code: "sdadadabhqci", //팀 코드
+      charge: "팀 프로젝트",
       progress: 65,
-      
+      description: "프로젝트 설명",
+      members: [
+        {name: "윤건", join_team: ["기획자","개발자"]},
+        {name: "장시후", join_team: ["기획자", "개발자"]},
+        {name: "박재영", join_team: ["개발자"]},
+        {name: "윤다경", join_team: ["개발자"]},
+        {name: "박미주", join_team: ["디자이너"]},
+        {name: "이민지", join_team: ["디자이너"]},
+      ],
+      team_explan: [
+        {join_team: "기획자", explan: "아이디어 제작"},
+        {join_team: "기획자", explan: "구체적인 페이지 또는 기능 설명"},
+        {join_team: "개발자", explan: "디자인 피드백"},
+        {join_team: "개발자", explan: "프로토타입 제작"},
+        {join_team: "디자이너", explan: "페르소나 제작"},
+        {join_team: "디자이너", explan: "디자인 제작"},
+      ],
+      team_deadline: [
+        {join_team: "기획자", deadline: "03/01 - 04/01"},
+        {join_team: "개발자", deadline: "04/01 - 05/01"},
+        {join_team: "디자이너", deadline: "05/01 - 06/01"},
+      ],
+      hidden: false
     },
     {
       id: 2,
@@ -308,20 +361,24 @@ export default function TeamPage() {
       period: "04/01 - 07/01",
       charge: "백엔드 개발",
       progress: 30,
+      hidden: false
     },
   ]);
+
+  const [showHidden, setShowHidden] = useState(false);
+  const hiddenCount = teams.filter((t) => t.hidden).length;
+  const visibleTeams = teams.filter((t) => showHidden ? t.hidden : !t.hidden);
+
 
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const menuRef = useRef();
   const [search, setSearch] = useState("");
-  const [openMenu, setOpenMenu] = useState(false);
-  const [getProgress, setProgress] = useState(0);
 
   useEffect(() => {
     const handleClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpenMenu(false);
+        setOpenMenuId(null);
       }
     };
     document.addEventListener("mousedown", handleClick);
@@ -330,6 +387,12 @@ export default function TeamPage() {
 
   const handleSearch = () => {
     console.log("검색어:", search);
+  };
+  const handleHide = (id) => {
+    setTeams((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, hidden: true } : t))
+    );
+    setOpenMenuId(null);
   };
 
   return (
@@ -367,7 +430,7 @@ export default function TeamPage() {
             </JoinButton>
           </HeaderBar>
           <TeamBox>
-            {teams.map((team) => (
+            {visibleTeams.map((team) => (
               <TeamBarContainer key={team.id}>
                 <Wapper>
                   <EllipsisIcon
@@ -382,12 +445,12 @@ export default function TeamPage() {
 
                 {openMenuId === team.id && (
                   <MenuBox ref={menuRef}>
-                    <MenuWapper onClick={() => navigate("/team-modify")}>
+                    <MenuWapper onClick={() => navigate("/team-modify", {state: {team}, from: "project"})}>
                       <MenuIcon src={modifyIcon} />
                       <MenuText>수정</MenuText>
                     </MenuWapper>
                     <MenuLine />
-                    <MenuWapper>
+                    <MenuWapper onClick={() => handleHide(team.id)}>
                       <MenuIcon src={hidingIcon} />
                       <MenuText>숨김</MenuText>
                     </MenuWapper>
@@ -428,6 +491,10 @@ export default function TeamPage() {
               </TeamBarContainer>
             ))}
           </TeamBox>
+          <HideWapper onClick={() => setShowHidden((prev) => !prev)}>
+              <HideText>숨김 ({hiddenCount})</HideText>
+              <HideIcon src={hideIcon} style={{ transform: showHidden ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }} />
+            </HideWapper>
           <CreateButton onClick={() => navigate("/team-create")}>
             <CreateIcon src={createIcon} />
           </CreateButton>

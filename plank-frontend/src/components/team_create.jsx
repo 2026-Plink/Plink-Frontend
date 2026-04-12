@@ -146,75 +146,104 @@ export default function TeamCreate(){
     const [endDate, setDate] = useState("");
 
     //일정 입력 통일되게 맞추는 함수
-    const formatDate = (value) => {
+    const formatPeriod = (value) => {
         if (!value) return null;
-      
-        const normalized = value.replace(/[./]/g, "-");
-        const parts = normalized.split("-");
-        if (parts.length !== 3) return null;
-      
-        let [year, month, day] = parts;
-      
-        if (!year || !month || !day) return null;
-      
-        month = month.padStart(2, "0");
-        day = day.padStart(2, "0");
-      
-        const formatted = `${year}-${month}-${day}`;
-        const date = new Date(formatted);
-      
-        return isNaN(date.getTime()) ? null : formatted;
-      };
+    
+        // 구분자(-, ~) 기준으로 시작/끝 분리
+        const parts = value.split(/[-~]/);
+        if (parts.length !== 2) return null;
+    
+        const formatPart = (part) => {
+            // 숫자만 추출 (., / 제거)
+            const nums = part.trim().replace(/[./]/g, "-").split("-");
+            if (nums.length !== 2) return null;
+    
+            let [month, day] = nums;
+            if (!month || !day) return null;
+    
+            month = month.trim().padStart(2, "0");
+            day = day.trim().padStart(2, "0");
+    
+            return `${month}/${day}`;
+        };
+    
+        const start = formatPart(parts[0]);
+        const end = formatPart(parts[1]);
+    
+        if (!start || !end) return null;
+    
+        return `${start} - ${end}`;  // 03/01-06/01 형식
+    };
 
     const sendTeamData = async (e) => {
         e.preventDefault();
-
-        if(!teamName.trim() || !endDate.trim()){
-            alert("프로젝트 이름과 기간을 작성해 주세요!");
-            return;
-        }
-
-        const formattedDate = formatDate(endDate);
-
-        if (!formattedDate) {
-            alert("날짜 형식이 올바르지 않습니다! (예: 2026-10-15)");
-            return;
-          }
-
-        // 🔥 오늘 날짜 (시간 제거)
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const selectedDate = new Date(formattedDate);
-
-        if (selectedDate < today) {
-            alert("기간은 오늘 이후 날짜만 가능합니다!");
-            return;
-        }
-        
-        try{
-            const res = await fetch("host이름/team", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+        const randomCode = Math.random().toString(36).substring(2, 10).toLowerCase();
+        navigate("/team-modify", {
+            state: {
+                team: {
+                    id: null,
+                    title: teamName,
+                    period: endDate,
+                    code: randomCode,
+                    charge: "",
+                    members: [],
+                    description: "",
+                    team_explan: [],
+                    team_deadline: [],
                 },
-                body: JSON.stringify({
-                    teamName,
-                    formattedDate
-                }),
-            });
-
-            if(!res.ok){
-                console.log("팀 생성 실패!");
-                alert("팀 생성 실패");
-            }else{
-                console.log("팀 생성 완료!");
-                alert("팀 생성 성공");
+                from: "create"
             }
-        }catch(err){
-            console.error(err);
-        }
-    }
+        });
+    
+        // if (!teamName.trim() || !endDate.trim()) {
+        //     alert("프로젝트 이름과 기간을 작성해 주세요!");
+        //     return;
+        // }
+    
+        // const formattedPeriod = formatPeriod(endDate);
+    
+        // if (!formattedPeriod) {
+        //     alert("기간 형식이 올바르지 않습니다! (예: 03/01-06/01)");
+        //     return;
+        // }
+    
+        // try {
+        //     const res = await fetch("host이름/team", {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({
+        //             teamName,
+        //             period: formattedPeriod  // "03/01-06/01" 형식으로 저장
+        //         }),
+        //     });
+    
+        //     if (res.ok) {
+        //         console.log("팀 생성 완료!");
+        //         alert("팀 생성 완료");
+        //         const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+        //         navigate("/team-modify", {
+        //             state: {
+        //                 team: {
+        //                     id: null,
+        //                     title: teamName,
+        //                     period: formattedPeriod,
+        //                     code: randomCode,
+        //                     charge: "",
+        //                     members: [],
+        //                     description: "",
+        //                     team_explan: [],
+        //                     team_deadline: [],
+        //                 }
+        //             }
+        //         });
+        //     } else {
+        //         console.log("팀 생성 실패!");
+        //         alert("팀 생성 실패");
+        //     }
+        // } catch (err) {
+        //     console.error(err);
+        // }
+    };
 
     return(
         <>
