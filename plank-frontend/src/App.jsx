@@ -17,12 +17,14 @@ import TeamModify from "./components/team_detail";
 import TeamDetailCreatePage from "./components/team_detail";
 import Mypage_user from "./components/mypage_user";
 import NotificationPage from "./components/nofitication";
+import Signup from "./pages/signup";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/team-create" element={<TeamCreate />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/team-join" element={<TeamJoin />} />
