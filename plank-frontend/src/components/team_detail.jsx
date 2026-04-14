@@ -177,7 +177,7 @@ const InfoText = styled.span`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    width: ${({$width}) => $width};
+    width: 80px;
     flex-shrink: 0;
 `;
 const MemberRow = styled.div`
