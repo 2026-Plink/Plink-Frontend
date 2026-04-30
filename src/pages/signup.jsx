@@ -2,6 +2,7 @@ import logo from '../assets/logo.svg';
 import styled, { createGlobalStyle } from "styled-components";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 export const GlobalStyle = createGlobalStyle`
     *{
@@ -118,17 +119,25 @@ export default function Signup() {
         return '';
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const err = validate();
         if (err) {
             alert(err);
             return;
         }
 
-        alert('회원가입 성공');
-        // setTimeout(() => {
+        try {
+            await axios.post('/api/auth/signup', {
+                email,
+                password,
+                userid: id,
+                name: id
+            });
+            alert('회원가입 성공');
             navigate('/');
-        // }, 500); // 텀 줘도 됨 
+        } catch (error) {
+            alert('회원가입 실패: ' + (error.response?.data?.message || '서버 오류'));
+        }
     };
 
     const isDisabled = !email || !id || !password;

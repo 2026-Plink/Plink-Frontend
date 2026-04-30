@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // components & pages
 import TeamCreate from "./components/team_create";
 import Login from "./pages/login";
+import Signup from "./pages/signup";
 import HomePage from "./pages/homePage";
 import TeamJoin from "./components/team_join";
 import TeamPage from "./components/team_page";
@@ -23,6 +24,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/team-create" element={<TeamCreate />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/team-join" element={<TeamJoin />} />

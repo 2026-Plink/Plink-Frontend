@@ -2,6 +2,7 @@ import logo from '../assets/logo.svg';
 import styled, { createGlobalStyle } from "styled-components";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 export const GlobalStyle = createGlobalStyle`
     *{
@@ -112,12 +113,15 @@ const Divider = styled.span`
 export default function Login() {
     const navigate = useNavigate();
 
-    const [id, setId] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const validate = () => {
-        if (!id || !password) {
-            return '아이디와 비밀번호를 입력해주세요';
+        if (!email || !password) {
+            return '이메일과 비밀번호를 입력해주세요';
+        }
+        if (!email.includes('@')) {
+            return '이메일 형식이 올바르지 않습니다';
         }
         if (password.length < 4) {
             return '비밀번호는 4자 이상 입력해주세요';
@@ -125,22 +129,24 @@ export default function Login() {
         return '';
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         const err = validate();
         if (err) {
             alert(err);
             return;
         }
 
-        if (id === 'test' && password === '1234') {
+        try {
+            const response = await axios.post('/api/auth/login', { email, password });
             alert('로그인 성공');
-            navigate('/homePage');
-        } else {
-            alert('아이디 또는 비밀번호가 틀렸습니다');
+            localStorage.setItem('token', response.data.token);
+            navigate('/homepage');
+        } catch (error) {
+            alert('로그인 실패: ' + (error.response?.data?.message || '서버 오류'));
         }
     };
 
-    const isDisabled = !id || !password;
+    const isDisabled = !email || !password;
 
     return (
         <>
@@ -150,11 +156,12 @@ export default function Login() {
 
                 <FloatingWrapper>
                     <Input
+                        type="email"
                         placeholder=" "
-                        value={id}
-                        onChange={(e) => setId(e.target.value)}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
-                    <Label>아이디</Label>
+                    <Label>이메일</Label>
                 </FloatingWrapper>
 
                 <FloatingWrapper>
@@ -180,5 +187,5 @@ export default function Login() {
                 </LinkGroup>
             </Container>
         </>
-    )
+    );
 }
