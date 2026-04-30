@@ -46,7 +46,6 @@ const TeamCodeInput = styled.input`
 `;
 
 export default function TeamJoin() {
-    const [teamName, setTeamName] = useState("");
     const [teamCode, setTeamCode] = useState("");
 
     const navigate = useNavigate();
@@ -54,32 +53,36 @@ export default function TeamJoin() {
     const sendTeamData = async (e) => {
         e.preventDefault();
 
-        if(!teamName.trim() || !teamCode.trim()){
-            alert("팀 이름과 팀 코드를 작성해 주세요!");
+        if(!teamCode.trim()){
+            alert("팀 코드를 작성해 주세요!");
             return;
         }
         
         try{
-            const res = await fetch("host이름/join", {
+            const token = localStorage.getItem('token');
+            const res = await fetch("/api/teams/join", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    teamName,
-                    teamCode
+                    inviteCode: teamCode
                 }),
             });
 
             if(!res.ok){
-                console.log("팀 참가 실패!");
-                alert("팀 참가 실패");
+                const errorData = await res.json();
+                console.log("팀 참가 실패!", errorData);
+                alert("팀 참가 실패: " + (errorData.error || "알 수 없는 오류"));
             }else{
                 console.log("팀 참가 완료!");
                 alert("팀 참가 성공");
+                navigate("/project"); // 성공 시 프로젝트 페이지로 이동
             }
         }catch(err){
             console.error(err);
+            alert("팀 참가 중 오류 발생");
         }
     }
 
@@ -93,10 +96,6 @@ export default function TeamJoin() {
                 <Logo src={logo} />
                 <Title>참가하기</Title>
                 <Form onSubmit={sendTeamData}>
-                    <InputWrapper>
-                        <TeamNameInput type="text" placeholder="" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
-                        <Label>이름</Label>
-                    </InputWrapper>
                     <InputWrapper>
                         <TeamCodeInput type="text" placeholder="" value={teamCode} onChange={(e) => setTeamCode(e.target.value)} />
                         <Label>팀 코드</Label>

@@ -1,7 +1,8 @@
 //packages
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 
 //assets
 import delete_icon from "../assets/x_icon.svg";
@@ -27,6 +28,7 @@ import setting from '../assets/setting.svg';
 import logo from '../assets/logo.svg';
 //components
 import backIcon from "../assets/detail_back_icon.svg";
+import message from "../assets/message.svg";
 import { GlobalStyle } from "../pages/homePage";
 
 import { Menu } from "../pages/homePage";
@@ -48,6 +50,7 @@ import { TextWapper } from "./detail_page";
 import { VerticalLine } from "./detail_page";
 import { DescriptionText } from "./detail_page";
 import { BottomWapper } from "./detail_page";
+import FeedbackForm from "./feedback.jsx";
 import { TeamBox } from "./detail_page";
 import { TeamWapper } from "./detail_page";
 import { NameWapper } from "./detail_page";
@@ -177,40 +180,78 @@ const InfoText = styled.span`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    width: 80px;
+    width: ${({$width}) => $width};
     flex-shrink: 0;
 `;
 const MemberRow = styled.div`
     margin: 0 50px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
 `;
 const MemberBox = styled.div`
-    display: flex;
-    width: 160px;
-    height: 40px;
-    padding: 10px 16px;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    border-radius: 8px;
-    background: var(--Gray-4, #E0E0E0);
-    margin-right: 10px;
-    box-sizing: border-box;
+    gap: 8px;
+    padding: 6px 10px;
+    margin: 4px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #c0da58 0%, #a0ba38 100%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.2s ease;
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+`;
+const MemberProfile = styled.div`
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #c0da58;
+    font-size: 12px;
+    flex-shrink: 0;
 `;
 const UserName = styled.span`
-    color: var(--black-1, #000);
+    color: #fff;
     font-family: Pretendard;
-    font-size: 20px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     line-height: normal;
-    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 80px;
 `;
+const RemoveButton = styled.button`
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    &:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(1.1);
+    }
+`
 const DataInput = styled.input`
     margin-left: 50px;
     color: var(--black-1, #000);
@@ -278,8 +319,15 @@ export default function TeamDetailCreatePage(){
     const [editingCharge, setEditingCharge] = useState(false);
     const [editingCode, setEditingCode] = useState(false);
     const [chargeWidth, setChargeWidth] = useState(0);
+    const [codeWidth, setCodeWidth] = useState(0);
     const chargeRef = useRef(null);
     const codeRef = useRef(null);
+    const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+    const [feedbackTarget, setFeedbackTarget] = useState(null);
+    const [isLoadingTeam, setIsLoadingTeam] = useState(false);
+    const [inviteableFriends, setInviteableFriends] = useState([]);
+    const [showInviteModal, setShowInviteModal] = useState(false);
+    const [isLoadingFriends, setIsLoadingFriends] = useState(false);
 
     // 텍스트 길이 기반 너비 계산
     const calcWidth = (text, fontSize = 22) => {
@@ -301,7 +349,9 @@ export default function TeamDetailCreatePage(){
         team_explan: [],
         ...(location.state?.team ?? {}),
     };
+    const [title, setTitle] = useState(team.title);
     const from = location.state?.from;
+    const editMode = location.state?.editMode || false;
 
     // 수정 가능한 필드만 state로
     const periodParts = team.period?.split(" - ") ?? ["", ""];
@@ -312,6 +362,90 @@ export default function TeamDetailCreatePage(){
     const [description, setDescription] = useState(team.description);
     const [teamExplan, setTeamExplan] = useState(team.team_explan);
     const [members, setMembers] = useState(team.members);
+
+    const teamId = team.id || localStorage.getItem("teamId");
+
+    useEffect(() => {
+        const loadTeamDetails = async () => {
+            if (!teamId) return;
+            setIsLoadingTeam(true);
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`/api/teams/${teamId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const data = response.data.team;
+                if (data) {
+                    setTitle(data.name || data.dpName || team.title);
+                    setCharge(data.dpLeader || '');
+                    setCode(data.teamCode || '');
+                    setDescription(data.dpName || data.name || '');
+                    setMembers((data.members || []).map((member) => ({
+                        id: member.USERID,
+                        name: member.NAME,
+                        role: member.ROLE
+                    })));
+                    if (data.deadline) {
+                        setStartPeriod(data.deadline);
+                        setEndPeriod('');
+                    }
+                }
+            } catch (error) {
+                console.error('팀 정보 조회 실패', error);
+            } finally {
+                setIsLoadingTeam(false);
+            }
+        };
+
+        loadTeamDetails();
+    }, [teamId]);
+
+    const loadInviteableFriends = async () => {
+        if (!teamId) return;
+        setIsLoadingFriends(true);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`/api/teams/${teamId}/inviteable-friends`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setInviteableFriends(response.data.friends || []);
+        } catch (error) {
+            console.error('초대 가능한 친구 조회 실패', error);
+        } finally {
+            setIsLoadingFriends(false);
+        }
+    };
+
+    const handleOpenInviteModal = () => {
+        loadInviteableFriends();
+        setShowInviteModal(true);
+    };
+
+    const handleInviteFriend = async (friendId) => {
+        if (!teamId) return;
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(
+                `/api/teams/${teamId}/invite`,
+                { friendId },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            alert('친구를 초대했어요!');
+            setShowInviteModal(false);
+            // 팀 정보 새로고침
+            const response = await axios.get(`/api/teams/${teamId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = response.data.team;
+            setMembers((data.members || []).map((member) => ({
+                id: member.USERID,
+                name: member.NAME,
+                role: member.ROLE
+            })));
+        } catch (error) {
+            alert(error.response?.data?.error || '초대 실패');
+        }
+    };
 
     const [teamGroups, setTeamGroups] = useState(() => {
         const acc = {};
@@ -380,30 +514,33 @@ export default function TeamDetailCreatePage(){
 
     const SetData = async () => {
         try{
-            const res = await fetch("host이름/join", {
-                method: "POST",
+            const token = localStorage.getItem('token');
+            const url = editMode ? `/api/teams/${team.id}` : "host이름/join";
+            const method = editMode ? "PUT" : "POST";
+            const res = await fetch(url, {
+                method,
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    id: team.id,
-                    title: team.title,
-                    period: `${startPeriod} - ${endPeriod}`,
-                    charge,
-                    code,
-                    description,
+                    name: title,
+                    deadline: `${startPeriod} - ${endPeriod}`,
+                    dpLeader: charge,
+                    teamCode: code,
+                    dpName: description,
                     members,
                     teamExplan,
                 }),
             });
     
             if(res.ok){
-                console.log("팀 세부사항 설정 성공");
-                alert("팀 설정 성공");
+                console.log(editMode ? "팀 수정 성공" : "팀 세부사항 설정 성공");
+                alert(editMode ? "팀 수정 성공" : "팀 설정 성공");
                 navigate("/project");
             }else{
-                console.log("팀 세부사항 설정 실패");
-                alert("팀 설정 실패");
+                console.log(editMode ? "팀 수정 실패" : "팀 세부사항 설정 실패");
+                alert(editMode ? "팀 수정 실패" : "팀 설정 실패");
             }
         }catch(err){
             console.error(err);
@@ -439,12 +576,12 @@ export default function TeamDetailCreatePage(){
                 <ContentBox>
                     <BackWapper onClick={() => SetData()}>
                         <TeamIcon src={backIcon} />
-                        <BackText>{from === "create" ? "생성 완료" : "돌아가기"}</BackText>
+                        <BackText>{editMode ? "수정 완료" : from === "create" ? "생성 완료" : "돌아가기"}</BackText>
                     </BackWapper>
                     <TextLine />
                     <Wapper>
                         <TeamLogo src={default_logo} />
-                        <ProjectName>{team.title}</ProjectName>
+                        <ProjectName>{title}</ProjectName>
                         <TextWapper>
                             <InfoText>기간</InfoText>
                             <DateWapper>
@@ -505,14 +642,21 @@ export default function TeamDetailCreatePage(){
                                 {members.length > 0 ? (
                                     members.map((member, index) => (
                                         <MemberBox key={index}>
-                                            <UserIcon src={user_icon} />
+                                            <MemberProfile>
+                                                {member.name.charAt(0)}
+                                            </MemberProfile>
                                             <UserName>{member.name}</UserName>
-                                            <DeleteIcon src={delete_icon} onClick={() => DeleteMember(index)} />
+                                            <RemoveButton onClick={() => DeleteMember(index)}>
+                                                ×
+                                            </RemoveButton>
                                         </MemberBox>
                                     ))
                                 ) : (
                                     <UserName>-</UserName>
                                 )}
+                                <IconWapper $size={35} onClick={handleOpenInviteModal} style={{cursor: 'pointer', background: '#c0da58', borderRadius: '50%'}}>
+                                    <AddIcon src={add_icon} />
+                                </IconWapper>
                             </MemberRow>
                         </TextWapper>
                     </Wapper>
@@ -599,6 +743,91 @@ export default function TeamDetailCreatePage(){
                     </Wapper>
                 </ContentBox>
             </PageLayout>
+            {showFeedbackModal && feedbackTarget && (
+                <FeedbackForm
+                    toUserId={feedbackTarget.userId}
+                    teamId={team.id}
+                    onClose={() => setShowFeedbackModal(false)}
+                    onSubmit={() => {
+                        // 피드백 제출 후 처리
+                        setShowFeedbackModal(false);
+                    }}
+                />
+            )}
+            {showInviteModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 999
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: '12px',
+                        padding: '24px',
+                        maxWidth: '400px',
+                        maxHeight: '500px',
+                        overflow: 'auto',
+                        boxShadow: '0 0 20px rgba(0,0,0,0.2)'
+                    }}>
+                        <div style={{fontSize: '20px', fontWeight: 'bold', marginBottom: '16px'}}>
+                            친구 초대
+                        </div>
+                        {isLoadingFriends ? (
+                            <div>로딩 중...</div>
+                        ) : inviteableFriends.length > 0 ? (
+                            <div>
+                                {inviteableFriends.map((friend) => (
+                                    <div key={friend.id} style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '10px',
+                                        borderBottom: '1px solid #eee'
+                                    }}>
+                                        <span>{friend.name}</span>
+                                        <button
+                                            onClick={() => handleInviteFriend(friend.id)}
+                                            style={{
+                                                background: '#c0da58',
+                                                color: '#fff',
+                                                border: 'none',
+                                                borderRadius: '6px',
+                                                padding: '6px 12px',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            초대
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div>초대할 친구가 없어요.</div>
+                        )}
+                        <button
+                            onClick={() => setShowInviteModal(false)}
+                            style={{
+                                marginTop: '16px',
+                                background: '#e0e0e0',
+                                border: 'none',
+                                borderRadius: '6px',
+                                padding: '8px 16px',
+                                cursor: 'pointer',
+                                width: '100%'
+                            }}
+                        >
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

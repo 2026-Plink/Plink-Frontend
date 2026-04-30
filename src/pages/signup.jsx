@@ -2,6 +2,7 @@ import logo from '../assets/logo.svg';
 import styled, { createGlobalStyle } from "styled-components";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 export const GlobalStyle = createGlobalStyle`
     *{
@@ -75,12 +76,6 @@ const FloatingWrapper = styled(InputWrapper)`
     }
 `
 
-const SignForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-
 const LoginButton = styled.button`
     width: 538px;
     height: 90px;
@@ -93,13 +88,12 @@ const LoginButton = styled.button`
     cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `
 
-const LoginLink = styled.button`
+const LoginLink = styled(Link)`
     margin-top: 20px;
     text-decoration: none;
     color: #70716F;
     font-size: 16px;
-    background-color: #fff;
-    border: none;
+
     &:hover {
         text-decoration: underline;
     }
@@ -125,37 +119,24 @@ export default function Signup() {
         return '';
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const errMsg = validate();
-        if(errMsg){
-            alert(errMsg);
+    const handleSubmit = async () => {
+        const err = validate();
+        if (err) {
+            alert(err);
             return;
         }
-        try{
-            //API 주소 꼭 변경 후 진행
-            const res = await fetch("주소/sign", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({id, password, email}),
-            });
 
-            //
-            if(!res.ok){
-                alert("아이디,비밀번호 또는 이메일이 형식에 맞지 않습니다.\n다시 입력해주세요!");
-                console.log("API 접근 실패");
-                return;
-            }
-            alert("회원가입 성공");
-            setTimeout(() => {
-                navigate('/');
-            }, 500);
-        }catch(err){
-            alert("회원가입 실패");
-            console.log("정보 저장 실패", err);
+        try {
+            await axios.post('/api/auth/signup', {
+                email,
+                password,
+                userid: id,
+                name: id
+            });
+            alert('회원가입 성공');
+            navigate('/');
+        } catch (error) {
+            alert('회원가입 실패: ' + (error.response?.data?.message || '서버 오류'));
         }
     };
 
@@ -167,39 +148,40 @@ export default function Signup() {
             <Container>
                 <Logo src={logo} alt="logo" />
 
-                <SignForm onSubmit={handleSubmit}>
-                    <FloatingWrapper>
-                        <Input
-                            type="email"
-                            placeholder=" "
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <Label>이메일</Label>
-                    </FloatingWrapper>
+                <FloatingWrapper>
+                    <Input
+                        type="email"
+                        placeholder=" "
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Label>이메일</Label>
+                </FloatingWrapper>
 
-                    <FloatingWrapper>
-                        <Input
-                            placeholder=" "
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                        />
-                        <Label>아이디</Label>
-                    </FloatingWrapper>
+                <FloatingWrapper>
+                    <Input
+                        placeholder=" "
+                        value={id}
+                        onChange={(e) => setId(e.target.value)}
+                    />
+                    <Label>아이디</Label>
+                </FloatingWrapper>
 
-                    <FloatingWrapper>
-                        <Input
-                            type="password"
-                            placeholder=" "
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <Label>비밀번호</Label>
-                    </FloatingWrapper>
+                <FloatingWrapper>
+                    <Input
+                        type="password"
+                        placeholder=" "
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Label>비밀번호</Label>
+                </FloatingWrapper>
 
-                    <LoginButton type="submit" disabled={isDisabled}>회원가입</LoginButton>
-                </SignForm>
-                <LoginLink onClick={() => navigate("/")}>로그인</LoginLink>
+                <LoginButton onClick={handleSubmit} disabled={isDisabled}>
+                    회원가입
+                </LoginButton>
+
+                <LoginLink to="/">로그인</LoginLink>
             </Container>
         </>
     )

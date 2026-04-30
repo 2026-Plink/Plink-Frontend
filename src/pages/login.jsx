@@ -2,6 +2,7 @@ import logo from '../assets/logo.svg';
 import styled, { createGlobalStyle } from "styled-components";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 export const GlobalStyle = createGlobalStyle`
     *{
@@ -75,12 +76,7 @@ const FloatingWrapper = styled(InputWrapper)`
     }
 `
 
-const LoginForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-
+// 🔥 버튼으로 변경 (중요)
 const LoginButton = styled.button`
     width: 538px;
     height: 90px;
@@ -117,12 +113,15 @@ const Divider = styled.span`
 export default function Login() {
     const navigate = useNavigate();
 
-    const [id, setId] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const validate = () => {
-        if (!id || !password) {
-            return '아이디와 비밀번호를 입력해주세요';
+        if (!email || !password) {
+            return '이메일과 비밀번호를 입력해주세요';
+        }
+        if (!email.includes('@')) {
+            return '이메일 형식이 올바르지 않습니다';
         }
         if (password.length < 4) {
             return '비밀번호는 4자 이상 입력해주세요';
@@ -130,43 +129,24 @@ export default function Login() {
         return '';
     };
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
-        const errMsg = validate();
-        if (errMsg) {
-            alert(errMsg);
+    const handleLogin = async () => {
+        const err = validate();
+        if (err) {
+            alert(err);
             return;
         }
 
-        try{
-            //API 주소 꼭 입력
-            const res = await fetch("주소/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({id, password}),
-            });
-
-            if(!res.ok){
-                alert("아이디 또는 비번이 틀렸습니다!");
-                return;
-            }
-            // 토큰 넣을 때만 주석 해제 안 넣을 시 코드 삭제
-            // const data = await res.json();
-            // localStorage.setItem("token", data.token);
+        try {
+            const response = await axios.post('/api/auth/login', { email, password });
             alert('로그인 성공');
-            setTimeout(() => {
-                navigate('/homePage');
-            }, 500);
-        } catch(err){
-            alert("로그인 실패");
-            console.log(err);
+            localStorage.setItem('token', response.data.token);
+            navigate('/homepage');
+        } catch (error) {
+            alert('로그인 실패: ' + (error.response?.data?.message || '서버 오류'));
         }
     };
 
-    const isDisabled = !id || !password;
+    const isDisabled = !email || !password;
 
     return (
         <>
@@ -174,31 +154,30 @@ export default function Login() {
             <Container>
                 <Logo src={logo} alt="logo" />
 
-                <LoginForm onSubmit={handleLogin}>
-                    <FloatingWrapper>
-                        <Input
-                            placeholder=" "
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                        />
-                        <Label>아이디</Label>
-                    </FloatingWrapper>
+                <FloatingWrapper>
+                    <Input
+                        type="email"
+                        placeholder=" "
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Label>이메일</Label>
+                </FloatingWrapper>
 
-                    <FloatingWrapper>
-                        <Input
-                            type="password"
-                            placeholder=" "
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <Label>비밀번호</Label>
-                    </FloatingWrapper>
+                <FloatingWrapper>
+                    <Input
+                        type="password"
+                        placeholder=" "
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Label>비밀번호</Label>
+                </FloatingWrapper>
 
-                    <LoginButton type="submit" disabled={isDisabled}>
-                        로그인
-                    </LoginButton>
-                </LoginForm>
-                
+                <LoginButton onClick={handleLogin} disabled={isDisabled}>
+                    로그인
+                </LoginButton>
+
                 <LinkGroup>
                     <SubLink to="/#">아이디 찾기</SubLink>
                     <Divider>|</Divider>
@@ -208,5 +187,5 @@ export default function Login() {
                 </LinkGroup>
             </Container>
         </>
-    )
+    );
 }
